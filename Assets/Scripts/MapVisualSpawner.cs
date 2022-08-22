@@ -6,7 +6,7 @@ public class MapVisualSpawner : MonoBehaviour
 {
     [SerializeField] private Transform largeHexPrefab;
 
-    private void Start() 
+    private void Awake() 
     {
         for(int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
         {

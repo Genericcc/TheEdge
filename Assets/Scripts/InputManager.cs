@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
 
-
+    public event EventHandler<Vector3> OnMouseClicked;
 
     private void Awake() 
     {
@@ -21,11 +23,15 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetMouseScreenPosition()
     {
+        OnMouseClicked?.Invoke(this, Input.mousePosition);
+
         return Input.mousePosition;
     }
 
     public bool IsMouseButtonDown()
     {
+        OnMouseClicked?.Invoke(this, Input.mousePosition);
+
         return Input.GetMouseButtonDown(0);
     }
 

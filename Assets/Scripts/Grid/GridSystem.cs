@@ -46,9 +46,29 @@ public class GridSystem<TGridObject>
     public GridPosition GetGridPosition(Vector3 worldPosition)
     {
         return new GridPosition(
-            Mathf.RoundToInt(worldPosition.x / cellSizeX),
+            Mathf.FloorToInt(worldPosition.x / cellSizeX), 
             Mathf.RoundToInt(worldPosition.z / cellSizeY)
             );
+
+        //Check if GridPosition is on an uneven row (Z value between 0.5 cellSizeY and 1.5 cellSizeY)
+        //float oneAndHalfcellSizeY = 1.5f * cellSizeY;
+        //
+        // if(worldPosition.z % oneAndHalfcellSizeY > cellSizeY/2)
+        // {
+        //     return new GridPosition(
+        //         Mathf.FloorToInt(worldPosition.x / cellSizeX), 
+        //         Mathf.RoundToInt(worldPosition.z / cellSizeY)
+        //         );
+        // } 
+        // else 
+        // {
+        //     //even row
+        //     return new GridPosition(
+        //         Mathf.RoundToInt(worldPosition.x / cellSizeX),
+        //         Mathf.RoundToInt(worldPosition.z / cellSizeY)
+        //         );
+        // }
+
     }
 
     public void CreateDebugObjects(Transform debugPrefab) 

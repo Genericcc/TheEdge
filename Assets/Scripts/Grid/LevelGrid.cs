@@ -17,6 +17,8 @@ public class LevelGrid : MonoBehaviour
     
     private GridSystem<GridObject> gridSystem;
 
+    Dictionary<GridPosition, Hex> hexDict = new Dictionary<GridPosition, Hex>();
+
     private void Awake() 
     {
         if(Instance != null) 
@@ -35,6 +37,11 @@ public class LevelGrid : MonoBehaviour
     private void Start() 
     {
         Pathfinding.Instance.Setup(width, height, cellSizeX, cellSizeY);
+
+        foreach(Hex hex in FindObjectsOfType<Hex>())
+        {
+            hexDict[hex.GetHexPosition] = hex;
+        }
     }
 
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
@@ -64,6 +71,14 @@ public class LevelGrid : MonoBehaviour
         OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
 
+    public Hex GetHex(GridPosition hexPosition)
+    {
+        Hex result = null;
+        hexDict.TryGetValue(hexPosition, out result);
+
+        return result;
+    }
+
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
 
     public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
@@ -73,6 +88,8 @@ public class LevelGrid : MonoBehaviour
     public int GetWidth() => gridSystem.GetWidth();
 
     public int GetHeight() => gridSystem.GetHeight();
+
+    public GridSystem<GridObject> GetGridSystem() => gridSystem;
 
     public bool HasAnyUnitOnGridPosition(GridPosition gridPosition)
     {
@@ -85,8 +102,6 @@ public class LevelGrid : MonoBehaviour
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         return gridObject.GetUnit();
     }
-
-    public GridSystem<GridObject> GetGridSystem() => gridSystem;
 
     public IInteractable GetInteractableAtGridPosition(GridPosition gridPosition)
     {

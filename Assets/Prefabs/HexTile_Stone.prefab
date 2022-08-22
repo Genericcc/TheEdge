@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2737870547578814367}
   - component: {fileID: 2727459420712405059}
   - component: {fileID: 2655525742458068653}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: HexBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,8 @@ GameObject:
   - component: {fileID: 2737531785341021659}
   - component: {fileID: 2728039577291883063}
   - component: {fileID: 2655453808467394279}
-  m_Layer: 7
+  - component: {fileID: 3822664227816078314}
+  m_Layer: 0
   m_Name: HexTop_StoneGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +133,7 @@ Transform:
   m_GameObject: {fileID: 2705819453579188481}
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2704026377417389839}
@@ -208,6 +209,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!64 &3822664227816078314
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2705819453579188481}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 8a91d15f217fa8d4b948d23e027a6b18, type: 3}
 --- !u!1 &2706433245188511845
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +232,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2704026377417389839}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: HexTile_Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,5 +254,5 @@ Transform:
   - {fileID: 2708973914054771257}
   - {fileID: 2703942961374221119}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

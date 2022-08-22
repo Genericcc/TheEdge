@@ -32,7 +32,9 @@ public class UnitActionSystem : MonoBehaviour
 
     private void Start() 
     {
-        SetSelectedUnit(selectedUnit);  
+        SetSelectedUnit(selectedUnit);
+        
+        //HexSelectionManager.Instance.
 
         Unit.OnAnyUnitDead += Unit_OnAnyUnitDead;
     }
@@ -95,15 +97,18 @@ public class UnitActionSystem : MonoBehaviour
     {
         if(InputManager.Instance.IsMouseButtonDown())
         {
-            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+            GridPosition mouseGridPosition = HexSelectionManager.Instance.GetSelectedHex().GetHexPositionnnnn();
+            //LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
 
             if(!selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
+                //Position not in the ValidGridPositionList
                 return;
             }
     
             if(!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
             {
+                //Debug.Log("Not enough action points");
                 return;
             }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {   
-    private const int ACTION_POINTS_MAX = 9;
+    private const int ACTION_POINTS_MAX = 99;
 
     public static event EventHandler OnAnyActionPointsChanged;
     public static event EventHandler OnAnyUnitSpawned;
@@ -27,7 +27,16 @@ public class Unit : MonoBehaviour
 
     private void Start() 
     {
-        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        Hex hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1);
+        if(hex != null)
+        {
+            gridPosition = hex.GetHexPositionnnnn();
+        }
+        else 
+        {
+            Debug.Log("Hex is kurwa null");
+        }
+
         LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
 
         //TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
@@ -38,7 +47,19 @@ public class Unit : MonoBehaviour
 
     private void Update() 
     {
-        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        Hex hex;
+
+        if(HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1) != null)
+        {
+            hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1);
+        }
+        else
+        {   //Shitty safeguard against getting null Hex while passing between large hexes (there is a tiny gap)
+            hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1 + Vector3.back * 2);
+        }
+
+        GridPosition newGridPosition = hex.GetHexPositionnnnn(); 
+
         if(newGridPosition != gridPosition)
         {
             //Unit moved Grid Position
