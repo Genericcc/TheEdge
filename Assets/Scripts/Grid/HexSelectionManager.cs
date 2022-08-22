@@ -45,8 +45,10 @@ public class HexSelectionManager : MonoBehaviour
             {
                 selectedHex = result.GetComponent<Hex>();
             }
-
-            Debug.Log("Hex not selected properly.");
+            else
+            {
+                Debug.Log("Hex not set properly.");
+            }
         }
     }
 
@@ -72,7 +74,7 @@ public class HexSelectionManager : MonoBehaviour
         if(Physics.Raycast(raycastOrigin, Vector3.down, out hit, selectionMask))
         {
             result = hit.collider.gameObject;
-            Debug.Log("Hit result is: " + result.name);
+            //Debug.Log("Hit result is: " + result.name);
             return true;
         }
 
@@ -91,10 +93,11 @@ public class HexSelectionManager : MonoBehaviour
             Hex hexBeneath = result.GetComponent<Hex>();
             return hexBeneath;
         }
-        
-        Debug.Log("Hex not selected properly");
-        return null;
-
+        else 
+        {
+            Debug.Log("Hex not selected properly");
+            return null;
+        }
     }
     
 }

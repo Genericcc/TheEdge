@@ -23,16 +23,21 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetMouseScreenPosition()
     {
-        OnMouseClicked?.Invoke(this, Input.mousePosition);
+        //OnMouseClicked?.Invoke(this, Input.mousePosition);
 
         return Input.mousePosition;
     }
 
     public bool IsMouseButtonDown()
     {
-        OnMouseClicked?.Invoke(this, Input.mousePosition);
+        if(Input.GetMouseButtonDown(0))
+        {
+            OnMouseClicked?.Invoke(this, Input.mousePosition);
 
-        return Input.GetMouseButtonDown(0);
+            return true;
+        }
+        
+        return false;
     }
 
     public Vector2 GetCameraMoveVector()
