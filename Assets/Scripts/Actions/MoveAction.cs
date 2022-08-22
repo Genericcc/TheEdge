@@ -9,6 +9,7 @@ public class MoveAction : BaseAction
     public event EventHandler OnStopMoving;
 
     [SerializeField] private int maxMoveDistance = 4;
+    [SerializeField] private float moveSpeed = 2f;
 
     private List<Vector3> positionList;
     private int currentPositionIndex;
@@ -29,7 +30,7 @@ public class MoveAction : BaseAction
         float stoppingDistance = .1f;
         if(Vector3.Distance(transform.position, targetPosition) > stoppingDistance) 
         {
-            float moveSpeed = 4f;
+            //moveSpeed = 4f;
             transform.position += moveDirection * Time.deltaTime * moveSpeed;
         } else 
         {
@@ -45,8 +46,8 @@ public class MoveAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete) 
     {
-        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath(
-            unit.GetGridPosition(), gridPosition, out int pathLength);
+        List<GridPosition> pathGridPositionList = 
+            Pathfinding.Instance.FindPath(unit.GetGridPosition(), gridPosition, out int pathLength);
 
         currentPositionIndex = 0;
         positionList = new List<Vector3>();

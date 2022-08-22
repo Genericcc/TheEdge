@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 6.976834, z: -5.56}
+  m_FollowOffset: {x: 0, y: 5, z: -5.56}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -489,8 +489,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.43403533, y: -1e-45, z: 1e-45, w: 0.9008959}
-  m_LocalPosition: {x: 0, y: 6.976834, z: -5.56}
+  m_LocalRotation: {x: 0.35807815, y: 3e-45, z: -1e-45, w: 0.9336916}
+  m_LocalPosition: {x: 0, y: 5, z: -5.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -908,8 +908,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549566259}
-  m_LocalRotation: {x: 0.43403533, y: -1e-45, z: 1e-45, w: 0.9008959}
-  m_LocalPosition: {x: 0, y: 6.976834, z: -5.56}
+  m_LocalRotation: {x: 0.35807815, y: 3e-45, z: -1e-45, w: 0.9336916}
+  m_LocalPosition: {x: 0, y: 5, z: -5.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1363,6 +1363,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4791456584824208290, guid: 8e950c24c945df745b2369f20ae82019,
         type: 3}
+      propertyPath: moveSpeed
+      value: 2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791456584824208290, guid: 8e950c24c945df745b2369f20ae82019,
+        type: 3}
       propertyPath: maxMoveDistance
       value: 2
       objectReference: {fileID: 0}
@@ -1419,6 +1424,11 @@ PrefabInstance:
     - target: {fileID: 4791456584824208291, guid: 8e950c24c945df745b2369f20ae82019,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839928955176222093, guid: 8e950c24c945df745b2369f20ae82019,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
