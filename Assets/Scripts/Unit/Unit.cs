@@ -17,7 +17,7 @@ public class Unit : MonoBehaviour
     private HealthSystem healthSystem;
     private BaseAction[] baseActionArray;
 
-    private int actionPoints = ACTION_POINTS_MAX;
+    [SerializeField] private int actionPoints = ACTION_POINTS_MAX;
 
     private void Awake() 
     {
@@ -39,7 +39,7 @@ public class Unit : MonoBehaviour
 
         LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
 
-        //TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
+        TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
         //healthSystem.OnDead += HealthSystem_OnDead;
 
         OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
@@ -54,7 +54,7 @@ public class Unit : MonoBehaviour
             hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1);
         }
         else
-        {   //Shitty safeguard against getting null Hex while passing between large hexes (there is a tiny gap)
+        {   //Temporary safeguard against getting null Hex while passing between large hexes (there is a tiny gap)
             hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1 + Vector3.back * 2);
         }
 

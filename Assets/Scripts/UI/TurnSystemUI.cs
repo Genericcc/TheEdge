@@ -9,7 +9,7 @@ public class TurnSystemUI : MonoBehaviour
 {
     [SerializeField] private Button endTurnButton;
     [SerializeField] private TextMeshProUGUI turnNumberText;
-    [SerializeField] private GameObject enemyTurnVisualGameObject;
+    //[SerializeField] private GameObject enemyTurnVisualGameObject;
 
     private void Start()
     {
@@ -39,7 +39,7 @@ public class TurnSystemUI : MonoBehaviour
 
     private void UpdateEnemyTurnVisual()
     {
-        enemyTurnVisualGameObject.SetActive(!TurnSystem.Instance.IsPlayerTurn());
+        //enemyTurnVisualGameObject.SetActive(!TurnSystem.Instance.IsPlayerTurn());
     }
 
     private void UpdateEndTurnButtonVisual()
