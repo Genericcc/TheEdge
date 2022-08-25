@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {   
-    private const int ACTION_POINTS_MAX = 99;
+    private const int ACTION_POINTS_MAX = 4;
 
     public static event EventHandler OnAnyActionPointsChanged;
     public static event EventHandler OnAnyUnitSpawned;
@@ -28,19 +28,20 @@ public class Unit : MonoBehaviour
     private void Start() 
     {
         Hex hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1);
+        
         if(hex != null)
         {
             gridPosition = hex.GetHexPositionnnnn();
         }
         else 
         {
-            Debug.Log("Hex is kurwa null");
+            Debug.Log("Hex is null");
         }
 
         LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
 
         TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
-        //healthSystem.OnDead += HealthSystem_OnDead;
+        healthSystem.OnDead += HealthSystem_OnDead;
 
         OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
     }
