@@ -40,7 +40,7 @@ public class EnemyAI : MonoBehaviour
                 timer -= Time.deltaTime;
                 if(timer <= 0f)
                 {
-                    if(TryTakeEnemyAIAction(SetStateTakingTurn))
+                    if(TryTakeEnemyAIAction(SetStateToTakingTurn))
                     {
                         state = State.Busy;
                     } else 
@@ -55,7 +55,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void SetStateTakingTurn()
+    private void SetStateToTakingTurn()
     {
         timer = 0.5f;
         state = State.TakingTurn;
@@ -90,6 +90,7 @@ public class EnemyAI : MonoBehaviour
 
         foreach(BaseAction baseAction in enemyUnit.GetBaseActionArray())
         {
+            
             if(!enemyUnit.CanSpendActionPointsToTakeAction(baseAction))
             {
                 //Enemy cannot afford this action
@@ -100,7 +101,8 @@ public class EnemyAI : MonoBehaviour
             {
                 bestEnemyAIAction = baseAction.GetBestEnemyAIAction();
                 bestBaseAction = baseAction;
-            }else
+            }
+            else
             {
                 EnemyAIAction testEnemyAIAction = baseAction.GetBestEnemyAIAction();
                 if(testEnemyAIAction != null && testEnemyAIAction.actionValue > bestEnemyAIAction.actionValue)

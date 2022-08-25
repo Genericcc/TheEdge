@@ -34,8 +34,6 @@ public class UnitActionSystem : MonoBehaviour
     {
         SetSelectedUnit(selectedUnit);
         
-        //HexSelectionManager.Instance.
-
         Unit.OnAnyUnitDead += Unit_OnAnyUnitDead;
     }
 
@@ -46,10 +44,10 @@ public class UnitActionSystem : MonoBehaviour
             return;
         }
 
-        // if(!TurnSystem.Instance.IsPlayerTurn())
-        // {
-        //     return;
-        // }
+        if(!TurnSystem.Instance.IsPlayerTurn())
+        {
+            return;
+        }
 
         if(EventSystem.current.IsPointerOverGameObject()) 
         {

@@ -71,7 +71,8 @@ public abstract class BaseAction : MonoBehaviour
         {
             enemyAIActionList.Sort((EnemyAIAction a, EnemyAIAction b) => b.actionValue - a.actionValue);
             return enemyAIActionList[0];
-        } else 
+        } 
+        else 
         {
             //No posible Enemy AI Actions
             return null;

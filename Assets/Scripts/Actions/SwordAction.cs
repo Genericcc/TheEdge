@@ -65,19 +65,6 @@ public class SwordAction : BaseAction
         }
     }
 
-    public override string GetActionName()
-    {
-        return "Sword";
-    }
-
-    public override EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition)
-    {
-        return new EnemyAIAction{
-            gridPosition = gridPosition,
-            actionValue = 200,
-        };
-    }
-
     public override List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
@@ -90,6 +77,43 @@ public class SwordAction : BaseAction
             {
                 GridPosition offsetGridPosition = new GridPosition(x, z);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
+
+                if(!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                {
+                    //Outside of the map
+                    continue;
+                }
+
+                if(!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                {
+                    //GridPosition is empty, no unit
+                    continue;
+                }
+
+                Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+
+                if(targetUnit.IsEnemy() == unit.IsEnemy())
+                {
+                    //Both Units are on the same 'team'
+                    continue;
+                }
+
+                validGridPositionList.Add(testGridPosition);
+            }
+        }
+        return validGridPositionList;
+    }
+
+    public List<GridPosition> GetValidActionGridPositionList(GridPosition gridPosition)
+    {
+        List<GridPosition> validGridPositionList = new List<GridPosition>();
+
+        for(int x = -maxSwordDistance; x <= maxSwordDistance; x++) 
+        {
+            for (int z = -maxSwordDistance; z <= maxSwordDistance; z++)
+            {
+                GridPosition offsetGridPosition = new GridPosition(x, z);
+                GridPosition testGridPosition = offsetGridPosition + gridPosition;
 
                 if(!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
                 {
@@ -130,4 +154,22 @@ public class SwordAction : BaseAction
     }
 
     public int GetMaxSwordDistance() => maxSwordDistance;
+
+    public override string GetActionName()
+    {
+        return "Sword";
+    }
+
+    public override EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition)
+    {
+        return new EnemyAIAction{
+            gridPosition = gridPosition,
+            actionValue = 200,
+        };
+    }
+
+    public int GetTargetCountAtPosition(GridPosition gridPosition)
+    {
+        return GetValidActionGridPositionList(gridPosition).Count;
+    }
 }
