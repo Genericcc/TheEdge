@@ -26,7 +26,6 @@ public class HexSelectionManager : MonoBehaviour
     private void Start() 
     {
         InputManager.Instance.OnMouseClicked += InputManager_OnMouseClicked;
-        
     }
 
     private void InputManager_OnMouseClicked(object sender, Vector3 mousePosition)
@@ -99,5 +98,7 @@ public class HexSelectionManager : MonoBehaviour
             return null;
         }
     }
+
+    
     
 }
