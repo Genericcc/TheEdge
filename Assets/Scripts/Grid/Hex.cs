@@ -9,6 +9,8 @@ public class Hex : MonoBehaviour
 
     public GridPosition GetHexPosition => hexPosition; 
 
+    //TODO delete the above, and change the name below to the above
+
     public GridPosition GetHexPositionnnnn() => hexPosition;
     
     private void Awake() 

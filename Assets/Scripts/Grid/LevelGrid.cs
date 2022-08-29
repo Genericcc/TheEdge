@@ -71,7 +71,7 @@ public class LevelGrid : MonoBehaviour
         OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
 
-    public Hex GetHex(GridPosition hexPosition)
+    public Hex GetHexFromCoordinates(GridPosition hexPosition)
     {
         Hex result = null;
         hexDict.TryGetValue(hexPosition, out result);
