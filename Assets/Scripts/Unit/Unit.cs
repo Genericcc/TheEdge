@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {   
-    private const int ACTION_POINTS_MAX = 4;
+    private const int MOVE_ACTION_POINT = 1;
+    private const int BATTLE_ACTION_POINT = 1;
 
     public static event EventHandler OnAnyActionPointsChanged;
     public static event EventHandler OnAnyUnitSpawned;
@@ -13,11 +14,14 @@ public class Unit : MonoBehaviour
 
     [SerializeField] private bool isEnemy;
 
+    public Card card;
+
     private GridPosition gridPosition;
     private HealthSystem healthSystem;
     private BaseAction[] baseActionArray;
 
-    [SerializeField] private int actionPoints = ACTION_POINTS_MAX;
+    private int moveActionPoint = MOVE_ACTION_POINT;
+    private int battleActionPoint = BATTLE_ACTION_POINT;
 
     private void Awake() 
     {
@@ -110,7 +114,8 @@ public class Unit : MonoBehaviour
         {
             SpendActionPoints(baseAction.GetActionPointCost());
             return true;
-        } else
+        } 
+        else
         {
             return false;
         }

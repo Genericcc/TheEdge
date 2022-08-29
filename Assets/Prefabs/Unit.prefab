@@ -176,6 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a50c9887784c92649817de51921f5f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  card: {fileID: 11400000, guid: b692e638e20388d4faf13385c82db423, type: 2}
   isEnemy: 0
   actionPoints: 99
 --- !u!114 &4791456584824208290
