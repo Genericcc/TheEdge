@@ -95,7 +95,14 @@ public class UnitActionSystem : MonoBehaviour
     {
         if(InputManager.Instance.IsMouseButtonDown())
         {
-            GridPosition mouseGridPosition = HexSelectionManager.Instance.GetSelectedHex().GetHexPositionnnnn();
+            LargeHex hex = HexSelectionManager.Instance.GetSelectedHex();
+
+            if(hex == null)
+            {
+                return;
+            }
+
+            GridPosition mouseGridPosition = hex.GetHexPosition();
             //LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
 
             if(!selectedAction.IsValidActionGridPosition(mouseGridPosition))

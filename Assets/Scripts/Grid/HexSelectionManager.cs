@@ -10,7 +10,7 @@ public class HexSelectionManager : MonoBehaviour
     [SerializeField] Camera mainCamera;
     [SerializeField] LayerMask selectionMask;
 
-    Hex selectedHex;
+    LargeHex selectedHex;
 
     private void Awake() 
     {
@@ -42,7 +42,7 @@ public class HexSelectionManager : MonoBehaviour
         {
             if(result != null)
             {
-                selectedHex = result.GetComponent<Hex>();
+                selectedHex = result.GetComponent<LargeHex>();
             }
             else
             {
@@ -81,15 +81,15 @@ public class HexSelectionManager : MonoBehaviour
         return false;
     }
 
-    public Hex GetSelectedHex() => selectedHex;
+    public LargeHex GetSelectedHex() => selectedHex;
 
-    public Hex GetHexBeneath(Vector3 worldPosition)
+    public LargeHex GetHexBeneath(Vector3 worldPosition)
     {
         GameObject result;
         
         if(TryFindHexBeneath(worldPosition, out result))
         {
-            Hex hexBeneath = result.GetComponent<Hex>();
+            LargeHex hexBeneath = result.GetComponent<LargeHex>();
             return hexBeneath;
         }
         else 

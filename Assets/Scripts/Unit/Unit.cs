@@ -6,7 +6,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {   
     private const int MOVE_ACTION_POINT = 1;
-    private const int BATTLE_ACTION_POINT = 1;
+    private const int SWORD_ACTION_POINT = 1;
 
     public static event EventHandler OnAnyActionPointsChanged;
     public static event EventHandler OnAnyUnitSpawned;
@@ -21,7 +21,7 @@ public class Unit : MonoBehaviour
     private BaseAction[] baseActionArray;
 
     private int moveActionPoint = MOVE_ACTION_POINT;
-    private int battleActionPoint = BATTLE_ACTION_POINT;
+    private int swordActionPoint = SWORD_ACTION_POINT;
 
     private void Awake() 
     {
@@ -31,11 +31,11 @@ public class Unit : MonoBehaviour
 
     private void Start() 
     {
-        Hex hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1);
+        LargeHex hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1);
         
         if(hex != null)
         {
-            gridPosition = hex.GetHexPositionnnnn();
+            gridPosition = hex.GetHexPosition();
         }
         else 
         {
@@ -52,7 +52,7 @@ public class Unit : MonoBehaviour
 
     private void Update() 
     {
-        Hex hex;
+        LargeHex hex;
 
         if(HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1) != null)
         {
@@ -63,7 +63,7 @@ public class Unit : MonoBehaviour
             hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1 + Vector3.back * 2);
         }
 
-        GridPosition newGridPosition = hex.GetHexPositionnnnn(); 
+        GridPosition newGridPosition = hex.GetHexPosition(); 
 
         if(newGridPosition != gridPosition)
         {
@@ -98,12 +98,29 @@ public class Unit : MonoBehaviour
 
     public bool CanSpendActionPointsToTakeAction(BaseAction baseAction)
     {
-        return (actionPoints >= baseAction.GetActionPointCost()); 
+        if(baseAction is MoveAction)
+        {
+            return (moveActionPoint >= baseAction.GetActionPointCost());
+        }
+
+        if (baseAction is SwordAction)
+        {
+            return (swordActionPoint >= baseAction.GetActionPointCost());
+        }
+         
+        return false;
     }
 
-    private void SpendActionPoints(int amountToSpend)
+    private void SpendMoveActionPoint(int amountToSpend)
     {
-        actionPoints -= amountToSpend;
+        moveActionPoint -= amountToSpend;
+        
+        OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SpendSwordActionPoint(int amountToSpend)
+    {
+        swordActionPoint -= amountToSpend;
         
         OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -112,7 +129,16 @@ public class Unit : MonoBehaviour
     {
         if(CanSpendActionPointsToTakeAction(baseAction))
         {
-            SpendActionPoints(baseAction.GetActionPointCost());
+            if(baseAction is MoveAction)
+            {
+                SpendMoveActionPoint(baseAction.GetActionPointCost());
+            }
+
+            if (baseAction is SwordAction)
+            {
+                SpendSwordActionPoint(baseAction.GetActionPointCost());
+            }
+
             return true;
         } 
         else
@@ -121,9 +147,14 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public int GetActionPoints()
+    public int GetMoveActionPoints()
     {
-        return actionPoints;
+        return moveActionPoint;
+    }
+
+    public int GetSwordActionPoints()
+    {
+        return swordActionPoint;
     }
 
     private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
@@ -131,7 +162,8 @@ public class Unit : MonoBehaviour
         if((IsEnemy() && !TurnSystem.Instance.IsPlayerTurn()) || 
             (!IsEnemy() && TurnSystem.Instance.IsPlayerTurn()))
         {
-            actionPoints = ACTION_POINTS_MAX;
+            moveActionPoint = MOVE_ACTION_POINT;
+            swordActionPoint = SWORD_ACTION_POINT;
 
             OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
         }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2737870547578814367}
   - component: {fileID: 2727459420712405059}
   - component: {fileID: 2655525742458068653}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HexBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 2728039577291883063}
   - component: {fileID: 2655453808467394279}
   - component: {fileID: 3822664227816078314}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HexTop_StoneGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,8 +232,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2704026377417389839}
-  m_Layer: 0
-  m_Name: HexTile_Stone
+  - component: {fileID: 4786317885271622756}
+  m_Layer: 9
+  m_Name: Hex
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,5 +255,17 @@ Transform:
   - {fileID: 2708973914054771257}
   - {fileID: 2703942961374221119}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4786317885271622756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2706433245188511845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6271c7ec56b29342ace5d2a0a6869b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

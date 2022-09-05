@@ -17,7 +17,7 @@ public class LevelGrid : MonoBehaviour
     
     private GridSystem<GridObject> gridSystem;
 
-    Dictionary<GridPosition, Hex> hexDict = new Dictionary<GridPosition, Hex>();
+    Dictionary<GridPosition, LargeHex> hexDict = new Dictionary<GridPosition, LargeHex>();
 
     private void Awake() 
     {
@@ -38,9 +38,9 @@ public class LevelGrid : MonoBehaviour
     {
         Pathfinding.Instance.Setup(width, height, cellSizeX, cellSizeY);
 
-        foreach(Hex hex in FindObjectsOfType<Hex>())
+        foreach(LargeHex hex in FindObjectsOfType<LargeHex>())
         {
-            hexDict[hex.GetHexPosition] = hex;
+            hexDict[hex.GetHexPosition()] = hex;
         }
     }
 
@@ -71,9 +71,9 @@ public class LevelGrid : MonoBehaviour
         OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
 
-    public Hex GetHexFromCoordinates(GridPosition hexPosition)
+    public LargeHex GetHexFromCoordinates(GridPosition hexPosition)
     {
-        Hex result = null;
+        LargeHex result = null;
         hexDict.TryGetValue(hexPosition, out result);
 
         return result;

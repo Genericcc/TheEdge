@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SwordAction : BaseAction
 {
+    [SerializeField] LayerMask hexLayerMask;
+
     public static event EventHandler OnAnySwordHit;
     public event EventHandler OnSwordActionStarted;
     public event EventHandler OnSwordActionCompleted;
@@ -69,37 +71,39 @@ public class SwordAction : BaseAction
     {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-        GridPosition unitGridPosition = unit.GetGridPosition();
+        Vector3 maxSphereCastDistance = new Vector3(1, 1, 1);
+        Vector3 unitWorldPosition = unit.GetWorldPosition();
 
-        for(int x = -maxSwordDistance; x <= maxSwordDistance; x++) 
+        Collider[] colliderArray = Physics.OverlapSphere(unitWorldPosition, maxSwordDistance, hexLayerMask);
+
+        GridPosition testGridPosition = new GridPosition();
+
+        foreach(Collider collider in colliderArray)
         {
-            for (int z = -maxSwordDistance; z <= maxSwordDistance; z++)
+            collider.TryGetComponent<Hex>(out Hex neighbourHex);
+
+            if(!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
             {
-                GridPosition offsetGridPosition = new GridPosition(x, z);
-                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-
-                if(!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
-                {
-                    //Outside of the map
-                    continue;
-                }
-
-                if(!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
-                {
-                    //GridPosition is empty, no unit
-                    continue;
-                }
-
-                Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
-
-                if(targetUnit.IsEnemy() == unit.IsEnemy())
-                {
-                    //Both Units are on the same 'team'
-                    continue;
-                }
-
-                validGridPositionList.Add(testGridPosition);
+                //Outside of the map
+                continue;
             }
+
+            if(!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+            {
+                //GridPosition is empty, no unit
+                continue;
+            }
+
+            Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+
+            if(targetUnit.IsEnemy() == unit.IsEnemy())
+            {
+                //Both Units are on the same 'team'
+                continue;
+            }
+
+            validGridPositionList.Add(testGridPosition);
+            
         }
         return validGridPositionList;
     }

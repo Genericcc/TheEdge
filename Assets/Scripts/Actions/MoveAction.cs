@@ -95,23 +95,24 @@ public class MoveAction : BaseAction
 
                 if(!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
                 {
-                    Debug.Log("Not walkable");
+                    //Debug.Log("Not walkable");
                     continue;
                 }
 
                 if(!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
                 {
-                    Debug.Log("No path");
+                    //Debug.Log("No path");
                     continue;
                 }
 
                 int pathfindingDistanceMultiplier = 10;
 
-                if(Pathfinding.Instance.GetPathLength(
-                    unitGridPosition, testGridPosition) > maxMoveDistance * pathfindingDistanceMultiplier)
+                if(Pathfinding.Instance.
+                    GetPathLength(unitGridPosition, testGridPosition) > maxMoveDistance * pathfindingDistanceMultiplier
+                    )
                 {
                     //Path length is too long
-                    Debug.Log("Too far");
+                    //Debug.Log("Too far");
                     continue;
                 }
 
@@ -130,7 +131,7 @@ public class MoveAction : BaseAction
     {
         int targetCountAtGridPosition = unit.GetAction<SwordAction>().GetTargetCountAtPosition(gridPosition);
 
-        Debug.Log("Target count: " + targetCountAtGridPosition);
+        //Debug.Log("Target count: " + targetCountAtGridPosition);
 
         return new EnemyAIAction 
         {

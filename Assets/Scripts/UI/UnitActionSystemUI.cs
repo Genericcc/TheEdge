@@ -9,7 +9,8 @@ public class UnitActionSystemUI : MonoBehaviour
 {
     [SerializeField] private Transform actionButtonPrefab;
     [SerializeField] private Transform actionButtonContainerTransform;
-    [SerializeField] private TextMeshProUGUI actionPointsText;
+    [SerializeField] private TextMeshProUGUI moveActionPointText;
+    [SerializeField] private TextMeshProUGUI swordActionPointText;
 
     private List<ActionButtonUI> actionButtonUIList;
 
@@ -79,7 +80,8 @@ public class UnitActionSystemUI : MonoBehaviour
     private void UpdateActionPoints()
     {
         Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
-        actionPointsText.text = "Action Points: " + selectedUnit.GetActionPoints();
+        moveActionPointText.text = "Move Action: " + selectedUnit.GetMoveActionPoints();
+        swordActionPointText.text = "Attack Action: " + selectedUnit.GetSwordActionPoints();
     }
 
     private void TurnSystem_OnTurnChanged(object sender, EventArgs e)

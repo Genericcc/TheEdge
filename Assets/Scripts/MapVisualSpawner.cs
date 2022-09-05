@@ -13,10 +13,12 @@ public class MapVisualSpawner : MonoBehaviour
             for(int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
             {
                 GridPosition gridPosition = new GridPosition(x,z);
-                Transform largeHexSingleTransform = Instantiate(largeHexPrefab,
-                                                                LevelGrid.Instance.GetWorldPosition(gridPosition),
-                                                                Quaternion.Euler(0,10.9f,0)
-                                                                );                                                              
+
+                Transform largeHexSingleTransform = 
+                    Instantiate(largeHexPrefab, 
+                                LevelGrid.Instance.GetWorldPosition(gridPosition),
+                                Quaternion.Euler(0,10.9f,0)
+                                );                                                              
             }
         }
     }

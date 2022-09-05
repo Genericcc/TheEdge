@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4502437123026517036}
   - component: {fileID: 8131450738253152834}
   - component: {fileID: 3128753631111838457}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SelectedVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,9 +176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a50c9887784c92649817de51921f5f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 11400000, guid: b692e638e20388d4faf13385c82db423, type: 2}
   isEnemy: 0
-  actionPoints: 99
+  card: {fileID: 11400000, guid: b692e638e20388d4faf13385c82db423, type: 2}
 --- !u!114 &4791456584824208290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,6 +557,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sword (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576183504170612391, guid: 8701c28623793b24397f5195fbe0c883,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3578237868584292755, guid: 8701c28623793b24397f5195fbe0c883,
         type: 3}
