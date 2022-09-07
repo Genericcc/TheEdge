@@ -71,7 +71,7 @@ public class SwordAction : BaseAction
     {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-        Vector3 maxSphereCastDistance = new Vector3(1, 1, 1);
+        Vector3 maxSphereCastDistance = new Vector3(10, 10, 10);
         Vector3 unitWorldPosition = unit.GetWorldPosition();
 
         Collider[] colliderArray = Physics.OverlapSphere(unitWorldPosition, maxSwordDistance, hexLayerMask);
@@ -80,7 +80,8 @@ public class SwordAction : BaseAction
 
         foreach(Collider collider in colliderArray)
         {
-            collider.TryGetComponent<Hex>(out Hex neighbourHex);
+            collider.transform.parent.TryGetComponent<Hex>(out Hex neighbourHex);
+            Debug.Log(neighbourHex.name);
 
             if(!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
             {

@@ -8,9 +8,11 @@ public class HexSelectionManager : MonoBehaviour
     public static HexSelectionManager Instance { get; private set; }
 
     [SerializeField] Camera mainCamera;
-    [SerializeField] LayerMask selectionMask;
+    [SerializeField] LayerMask selectionMaskLargeHex;
+    [SerializeField] LayerMask selectionMaskSmallHex;
 
     LargeHex selectedHex;
+    Hex selectedSmallHex;
 
     private void Awake() 
     {
@@ -36,27 +38,40 @@ public class HexSelectionManager : MonoBehaviour
 
     private void SetSelectedHex(Vector3 mousePosition)
     {
-        GameObject result;
+        GameObject resultLargeHex;
+        GameObject resultSmallHex;
 
-        if(TryFindHexAt(mousePosition, out result))
+        if(TryFindHexAt(mousePosition, selectionMaskLargeHex, out resultLargeHex))
         {
-            if(result != null)
+            if(resultLargeHex != null)
             {
-                selectedHex = result.GetComponent<LargeHex>();
+                selectedHex = resultLargeHex.GetComponent<LargeHex>();
             }
             else
             {
-                Debug.Log("Hex not set properly.");
+                Debug.Log("Large Hex not set properly.");
+            }
+        }
+        
+        if(TryFindHexAt(mousePosition, selectionMaskSmallHex, out resultSmallHex))
+        {
+            if(resultSmallHex != null)
+            {
+                selectedSmallHex = resultSmallHex.transform.parent.GetComponent<Hex>();
+            }
+            else
+            {
+                Debug.Log("Small Hex not set properly.");
             }
         }
     }
 
-    private bool TryFindHexAt(Vector3 mousePosition, out GameObject result)
+    private bool TryFindHexAt(Vector3 mousePosition, LayerMask selectionMask, out GameObject result)
     {
         RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
-        if(Physics.Raycast(ray, out hit, selectionMask))
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, selectionMask))
         {
             result = hit.collider.gameObject;
             return true;
@@ -66,35 +81,53 @@ public class HexSelectionManager : MonoBehaviour
         return false;
     }
 
-    private bool TryFindHexBeneath(Vector3 raycastOrigin, out GameObject result)
+    private bool TryFindHexBeneath(Vector3 raycastOrigin, LayerMask selectionMask, out GameObject result)
     {
         RaycastHit hit;
 
-        if(Physics.Raycast(raycastOrigin, Vector3.down, out hit, selectionMask))
+        if(Physics.Raycast(raycastOrigin + Vector3.up * 1, Vector3.down, out hit, Mathf.Infinity, selectionMask))
         {
             result = hit.collider.gameObject;
             //Debug.Log("Hit result is: " + result.name);
             return true;
         }
-
+       
         result = null;
         return false;
     }
 
     public LargeHex GetSelectedHex() => selectedHex;
+    
+    public Hex GetSelectedSmallHex() => selectedSmallHex;
 
-    public LargeHex GetHexBeneath(Vector3 worldPosition)
+    public LargeHex GetLargeHexBeneath(Vector3 worldPosition)
     {
         GameObject result;
         
-        if(TryFindHexBeneath(worldPosition, out result))
+        if(TryFindHexBeneath(worldPosition, selectionMaskLargeHex, out result))
         {
             LargeHex hexBeneath = result.GetComponent<LargeHex>();
             return hexBeneath;
         }
         else 
         {
-            Debug.Log("Hex not selected properly");
+            //Debug.Log("Hex not selected properly");
+            return null;
+        }
+    }
+
+    public Hex GetSmallHexBeneath(Vector3 worldPosition)
+    {
+        GameObject result;
+        
+        if(TryFindHexBeneath(worldPosition, selectionMaskSmallHex, out result))
+        {
+            Hex hexBeneath = result.transform.parent.GetComponent<Hex>();
+            return hexBeneath;
+        }
+        else 
+        {
+            //Debug.Log("Hex not selected properly");
             return null;
         }
     }

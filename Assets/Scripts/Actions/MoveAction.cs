@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MoveAction : BaseAction
@@ -13,6 +14,7 @@ public class MoveAction : BaseAction
 
     private List<Vector3> positionList;
     private int currentPositionIndex;
+    bool isLargeHexMoveCompleted = false;
 
     void Update()
     {
@@ -21,7 +23,17 @@ public class MoveAction : BaseAction
             return; 
         }
 
-        Vector3 targetPosition = positionList[currentPositionIndex];        
+        Vector3 targetPosition;
+
+        if(!isLargeHexMoveCompleted)
+        {
+            targetPosition = positionList[currentPositionIndex];   
+        }
+        else    
+        {
+            targetPosition = HexSelectionManager.Instance.GetSelectedSmallHex().transform.position;
+        }  
+         
         Vector3 moveDirection = (targetPosition - transform.position).normalized;
         
         float rotateSpeed = 10f;
@@ -32,14 +44,27 @@ public class MoveAction : BaseAction
         {
             //moveSpeed = 4f;
             transform.position += moveDirection * Time.deltaTime * moveSpeed;
-        } else 
+        } 
+        else 
         {
-            currentPositionIndex++;
+            if(!isLargeHexMoveCompleted)
+            {
+                currentPositionIndex++;
+            }
+            
             if(currentPositionIndex >= positionList.Count)
             {
-                OnStopMoving?.Invoke(this, EventArgs.Empty);
+                if(isLargeHexMoveCompleted)
+                {   
+                    isLargeHexMoveCompleted = false;
 
-                ActionComplete();   
+                    OnStopMoving?.Invoke(this, EventArgs.Empty);
+
+                    ActionComplete(); 
+                }
+            
+                isLargeHexMoveCompleted = true; //TODO: it always ends up as true...
+                
             }
         }
     }
@@ -66,7 +91,31 @@ public class MoveAction : BaseAction
     {
         List<GridPosition> validGridPositionList = new List<GridPosition>();
 
-        GridPosition unitGridPosition = unit.GetGridPosition();
+        LargeHex unitLargeHex = HexSelectionManager.Instance.GetLargeHexBeneath(unit.transform.position);
+        Hex unitHex = HexSelectionManager.Instance.GetSmallHexBeneath(unit.transform.position);
+
+        List<LargeHex> neighbourList = LevelGrid.Instance.GetNeighbourList(unitLargeHex);
+
+        for(int i = maxMoveDistance; i > 1; i--)
+        {
+            foreach(LargeHex neighbour in neighbourList)
+            {
+                neighbourList = neighbourList.Concat(LevelGrid.Instance.GetNeighbourList(neighbour)).ToList<LargeHex>();
+                //TODO: remove duplicates from the list
+            }
+
+            maxMoveDistance--;
+        }
+
+        neighbourList = neighbourList.Distinct().ToList<LargeHex>();
+
+        foreach(LargeHex hex in neighbourList)
+        {
+            Debug.Log(hex.GetHexPosition());
+        }
+
+
+        GridPosition unitGridPosition = new GridPosition(0,0);
 
         for(int x = -maxMoveDistance; x <= maxMoveDistance; x++) 
         {
@@ -81,7 +130,7 @@ public class MoveAction : BaseAction
                     continue;
                 }
                 
-                if(unitGridPosition == testGridPosition)
+                if(unitGridPosition == unitGridPosition)
                 {
                     //Same GridPosition where the unit already is
                     continue;

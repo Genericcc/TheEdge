@@ -31,7 +31,8 @@ public class Unit : MonoBehaviour
 
     private void Start() 
     {
-        LargeHex hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1);
+        LargeHex hex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position);
+        Hex smallHex = HexSelectionManager.Instance.GetSmallHexBeneath(transform.position);
         
         if(hex != null)
         {
@@ -54,13 +55,13 @@ public class Unit : MonoBehaviour
     {
         LargeHex hex;
 
-        if(HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1) != null)
+        if(HexSelectionManager.Instance.GetLargeHexBeneath(transform.position) != null)
         {
-            hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1);
+            hex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position);
         }
         else
         {   //Temporary safeguard against getting null Hex while passing between large hexes (there is a tiny gap)
-            hex = HexSelectionManager.Instance.GetHexBeneath(transform.position + Vector3.up * 1 + Vector3.back * 2);
+            hex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position + Vector3.back * 2);
         }
 
         GridPosition newGridPosition = hex.GetHexPosition(); 
@@ -73,6 +74,8 @@ public class Unit : MonoBehaviour
 
             LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
         }
+
+
     }
 
     public T GetAction<T>() where T : BaseAction

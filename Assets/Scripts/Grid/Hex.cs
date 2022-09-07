@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Hex : MonoBehaviour
 {
-    
-    bool isOccupied;
+    [SerializeField] private GameObject visualGameObject;
 
-    
+    Unit occupingUnit;
 
+    public GameObject GetVisual() => visualGameObject;
+
+ 
 
 }

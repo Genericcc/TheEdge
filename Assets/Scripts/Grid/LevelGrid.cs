@@ -114,4 +114,99 @@ public class LevelGrid : MonoBehaviour
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         gridObject.SetInteractable(interactable);
     }
+
+    public List<LargeHex> GetNeighbourList(LargeHex currentNode)
+    {
+        List<LargeHex> neighbourList = new List<LargeHex>();
+
+        GridPosition gridPosition = currentNode.GetHexPosition();
+
+        //even row 
+        if(gridPosition.z % 2 == 0)
+        {
+            if(gridPosition.x - 1 >= 0)
+            {
+                //Left Node
+                neighbourList.Add(GetLargeHex(gridPosition.x - 1, gridPosition.z + 0));
+                
+                //Left Down Node
+                if(gridPosition.z - 1 >= 0)
+                {
+                    neighbourList.Add(GetLargeHex(gridPosition.x - 1, gridPosition.z - 1));
+                }
+
+                //Left Up Node
+                if(gridPosition.z + 1 < gridSystem.GetHeight())
+                {            
+                    neighbourList.Add(GetLargeHex(gridPosition.x - 1, gridPosition.z + 1));    
+                }        
+            }
+            
+            if(gridPosition.x + 1 < gridSystem.GetWidth())
+            {
+                //Right Node
+                neighbourList.Add(GetLargeHex(gridPosition.x + 1, gridPosition.z + 0));
+            }
+
+            if(gridPosition.z - 1 >= 0)
+            {            
+                //Right Down Node
+                neighbourList.Add(GetLargeHex(gridPosition.x + 0, gridPosition.z - 1));
+            }
+
+            if(gridPosition.z + 1 < gridSystem.GetHeight())
+            {               
+                //Right Up Node
+                neighbourList.Add(GetLargeHex(gridPosition.x + 0, gridPosition.z + 1)); 
+            }       
+        }
+
+        //uneven row 
+        if(gridPosition.z % 2 != 0)
+        {
+            if(gridPosition.x - 1 >= 0)
+            {
+                //Left Node
+                neighbourList.Add(GetLargeHex(gridPosition.x - 1, gridPosition.z + 0));
+            }
+            
+            if(gridPosition.z - 1 >= 0)
+            {
+                //Left Down Node
+                neighbourList.Add(GetLargeHex(gridPosition.x + 0, gridPosition.z - 1));
+            }
+            
+            if(gridPosition.z + 1< gridSystem.GetHeight())
+            {   
+                //Left Up Node         
+                neighbourList.Add(GetLargeHex(gridPosition.x + 0, gridPosition.z + 1));    
+            }        
+            
+            if(gridPosition.x + 1 < gridSystem.GetWidth())
+            {
+                //Right Node
+                neighbourList.Add(GetLargeHex(gridPosition.x + 1, gridPosition.z + 0));
+  
+                //Right Down Node
+                if(gridPosition.z - 1 >= 0)
+                {
+                    neighbourList.Add(GetLargeHex(gridPosition.x + 1, gridPosition.z - 1));
+                }
+
+                //Right Up Node
+                if(gridPosition.z + 1 < gridSystem.GetHeight())
+                {   
+                    neighbourList.Add(GetLargeHex(gridPosition.x + 1, gridPosition.z + 1)); 
+                }     
+            }    
+        }
+        
+        return neighbourList;
+    }
+
+    private LargeHex GetLargeHex(int x, int z)
+    {
+        return GetHexFromCoordinates(new GridPosition(x, z)); 
+    }
+
 }

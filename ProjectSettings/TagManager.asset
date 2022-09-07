@@ -12,10 +12,10 @@ TagManager:
   - Water
   - UI
   - Obstacles
-  - Ground
-  - UnitsLayer
-  - Hex
   - 
+  - UnitsLayer
+  - LargeHex
+  - SmallHex
   - 
   - 
   - 
