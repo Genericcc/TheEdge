@@ -50,7 +50,7 @@ public class GridSystemVisual : MonoBehaviour
             {
                 GridPosition gridPosition = new GridPosition(x,z);
                 Transform gridSysemVisualSingleTransform = Instantiate(gridSystemVisualSinglePrefab,
-                                                                       LevelGrid.Instance.GetWorldPosition(gridPosition),
+                                                                       LevelGrid.Instance.GetWorldPosition(gridPosition) + Vector3.up * 0.22f,
                                                                        Quaternion.identity);
 
                 gridSystemVisualSingleArray[x,z] = gridSysemVisualSingleTransform.GetComponent<GridSystemVisualSingle>();                                                               
@@ -89,25 +89,25 @@ public class GridSystemVisual : MonoBehaviour
             case MoveAction moveAction:
                 gridVisualType = GridVisualType.White;
                 break;
-            case SpinAction spinAction:
-                gridVisualType = GridVisualType.Blue;
-                break;
-            case ShootAction shootAction:
-                gridVisualType = GridVisualType.Red;
+            // case SpinAction spinAction:
+            //     gridVisualType = GridVisualType.Blue;
+            //     break;
+            // case ShootAction shootAction:
+            //     gridVisualType = GridVisualType.Red;
 
-                ShowGridPositionRange(selectedUnit.GetGridPosition(), shootAction.GetMaxShootDistance(), GridVisualType.RedSoft);
-                break;
-            case GrenadeAction grenadeAction:
-                gridVisualType = GridVisualType.Yellow;
-                break;
+            //     ShowGridPositionRange(selectedUnit.GetGridPosition(), shootAction.GetMaxShootDistance(), GridVisualType.RedSoft);
+            //     break;
+            // case GrenadeAction grenadeAction:
+            //     gridVisualType = GridVisualType.Yellow;
+            //     break;
             case SwordAction swordAction:
                 gridVisualType = GridVisualType.Red;
 
-                ShowGridPositionRangeSquare(selectedUnit.GetGridPosition(), swordAction.GetMaxSwordDistance(), GridVisualType.RedSoft);
+                ShowSmallHexAttackRange(selectedUnit.GetSmallHex(), swordAction.GetMaxSwordDistance(), GridVisualType.RedSoft);
                 break;
-            case InteractAction interactAction:
-                gridVisualType = GridVisualType.Blue;
-                break;
+            // case InteractAction interactAction:
+            //     gridVisualType = GridVisualType.Blue;
+            //     break;
         }
 
         ShowGridPositionList(selectedAction.GetValidActionGridPositionList(), gridVisualType);
@@ -142,26 +142,25 @@ public class GridSystemVisual : MonoBehaviour
         ShowGridPositionList(gridPositionList, gridVisualType);
     }
 
-    private void ShowGridPositionRangeSquare(GridPosition gridPosition, int range, GridVisualType gridVisualType)
+    private void ShowSmallHexAttackRange(Hex smallHex, int range, GridVisualType gridVisualType)
     {
         List<GridPosition> gridPositionList = new List<GridPosition>();
+        List<Hex> neighbourList = LevelGrid.Instance.GetSmallNeighbours(smallHex);
 
-        for(int x = -range; x <= range; x++)
-        {
-            for(int z = -range; z <= range; z++)
-            {
-                GridPosition testGridPosition = gridPosition + new GridPosition(x,z);
-                
-                if(!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
-                {
-                    //Outside of the map
-                    continue;
-                }
+        foreach(Hex neighbour in neighbourList)
+        {            
+            // if(!LevelGrid.Instance.IsValidGridPosition(neighbour.GetHexPosition()))
+            // {
+            //     //Outside of the map
+            //     continue;
+            // }
 
-                gridPositionList.Add(testGridPosition);
-            }
+            //gridPositionList.Add(neighbour.GetHexPosition());
         }
 
+        //TODO:
+        //ShowSmallHexList(neighbourList, gridVisualType);
+    
         ShowGridPositionList(gridPositionList, gridVisualType);
     }
 
@@ -172,8 +171,6 @@ public class GridSystemVisual : MonoBehaviour
             gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].Show(GetGridVisualTypeMaterial(gridVisualType));
         }
     }
-
-
     
     private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e)
     {

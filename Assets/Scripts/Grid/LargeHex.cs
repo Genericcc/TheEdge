@@ -18,6 +18,7 @@ public class LargeHex : MonoBehaviour
     private void Awake() 
     {
         hexPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        //Debug.Log(hexPosition);
     }
 
     public GridPosition GetHexPosition() => hexPosition;

@@ -17,6 +17,9 @@ public class Unit : MonoBehaviour
     public Card card;
 
     private GridPosition gridPosition;
+    private LargeHex largeHex;
+    private Hex smallHex;
+
     private HealthSystem healthSystem;
     private BaseAction[] baseActionArray;
 
@@ -31,12 +34,12 @@ public class Unit : MonoBehaviour
 
     private void Start() 
     {
-        LargeHex hex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position);
-        Hex smallHex = HexSelectionManager.Instance.GetSmallHexBeneath(transform.position);
+        largeHex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position);
+        smallHex = HexSelectionManager.Instance.GetSmallHexBeneath(transform.position);
         
-        if(hex != null)
+        if(largeHex != null)
         {
-            gridPosition = hex.GetHexPosition();
+            gridPosition = largeHex.GetHexPosition();
         }
         else 
         {
@@ -91,6 +94,10 @@ public class Unit : MonoBehaviour
     } 
 
     public GridPosition GetGridPosition() => gridPosition;
+    
+    public LargeHex GetLargeHex() => largeHex;
+    
+    public Hex GetSmallHex() => smallHex;
 
     public Vector3 GetWorldPosition() 
     {

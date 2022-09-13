@@ -9,7 +9,7 @@ public class MoveAction : BaseAction
     public event EventHandler OnStartMoving;
     public event EventHandler OnStopMoving;
 
-    [SerializeField] private int maxMoveDistance = 4;
+    [SerializeField] private int maxMoveDistance = 3;
     [SerializeField] private float moveSpeed = 2f;
 
     private List<Vector3> positionList;
@@ -92,82 +92,66 @@ public class MoveAction : BaseAction
         List<GridPosition> validGridPositionList = new List<GridPosition>();
 
         LargeHex unitLargeHex = HexSelectionManager.Instance.GetLargeHexBeneath(unit.transform.position);
-        Hex unitHex = HexSelectionManager.Instance.GetSmallHexBeneath(unit.transform.position);
+        Hex unitSmallHex = HexSelectionManager.Instance.GetSmallHexBeneath(unit.transform.position);
 
         List<LargeHex> neighbourList = LevelGrid.Instance.GetNeighbourList(unitLargeHex);
 
-        for(int i = maxMoveDistance; i > 1; i--)
+        int searchRange = maxMoveDistance;
+        for(int i = searchRange; i > 1; i--)
         {
             foreach(LargeHex neighbour in neighbourList)
             {
-                neighbourList = neighbourList.Concat(LevelGrid.Instance.GetNeighbourList(neighbour)).ToList<LargeHex>();
-                //TODO: remove duplicates from the list
-            }
+                //Debug.Log(neighbour.GetHexPosition());
 
-            maxMoveDistance--;
+                neighbourList = neighbourList.Concat(LevelGrid.Instance.GetNeighbourList(neighbour)).ToList<LargeHex>();
+            }
+            searchRange--;
         }
 
-        neighbourList = neighbourList.Distinct().ToList<LargeHex>();
+        neighbourList = neighbourList.Distinct().ToList<LargeHex>(); //Removes duplicates
 
         foreach(LargeHex hex in neighbourList)
         {
-            Debug.Log(hex.GetHexPosition());
-        }
+            GridPosition testGridPosition = hex.GetHexPosition();
+            
+            // if(unitLargeHex == hex)
+            // {
+            //     //Same LargeHex where the unit already is
+            //     continue;
+            // }
 
+            // if(LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+            // {
+            //     //GridPosition already occupied with another unit
+            //     continue;
+            // }
 
-        GridPosition unitGridPosition = new GridPosition(0,0);
-
-        for(int x = -maxMoveDistance; x <= maxMoveDistance; x++) 
-        {
-            for (int z = -maxMoveDistance; z <= maxMoveDistance; z++)
+            if(!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
             {
-                GridPosition offsetGridPosition = new GridPosition(x, z);
-                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-
-                if(!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
-                {
-                    //Outside of the map
-                    continue;
-                }
-                
-                if(unitGridPosition == unitGridPosition)
-                {
-                    //Same GridPosition where the unit already is
-                    continue;
-                }
-
-                if(LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
-                {
-                    //GridPosition already occupied with another unit
-                    continue;
-                }
-
-                if(!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
-                {
-                    //Debug.Log("Not walkable");
-                    continue;
-                }
-
-                if(!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
-                {
-                    //Debug.Log("No path");
-                    continue;
-                }
-
-                int pathfindingDistanceMultiplier = 10;
-
-                if(Pathfinding.Instance.
-                    GetPathLength(unitGridPosition, testGridPosition) > maxMoveDistance * pathfindingDistanceMultiplier
-                    )
-                {
-                    //Path length is too long
-                    //Debug.Log("Too far");
-                    continue;
-                }
-
-                validGridPositionList.Add(testGridPosition);
+                //Debug.Log("Not walkable");
+                continue;
             }
+
+            if(!Pathfinding.Instance.HasPath(unitLargeHex.GetHexPosition(), testGridPosition))
+            {
+                //Debug.Log("No path");
+                continue;
+            }
+
+            int pathfindingDistanceMultiplier = 10;
+
+            if(Pathfinding.Instance.
+                GetPathLength(unitLargeHex.GetHexPosition(), testGridPosition) > maxMoveDistance * pathfindingDistanceMultiplier
+                )
+            {
+                //Path length is too long
+                //Debug.Log("Too far");
+                continue;
+            }
+
+            validGridPositionList.Add(testGridPosition);
         }
+        
         return validGridPositionList;
     }
 

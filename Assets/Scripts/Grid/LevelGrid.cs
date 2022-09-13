@@ -9,6 +9,7 @@ public class LevelGrid : MonoBehaviour
 
     public event EventHandler OnAnyUnitMovedGridPosition;
 
+    [SerializeField] private LayerMask smallHexLayerMask;
     [SerializeField] private Transform gridDebugObjectPrefab;
     [SerializeField] private int width;
     [SerializeField] private int height;
@@ -71,14 +72,6 @@ public class LevelGrid : MonoBehaviour
         OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
 
-    public LargeHex GetHexFromCoordinates(GridPosition hexPosition)
-    {
-        LargeHex result = null;
-        hexDict.TryGetValue(hexPosition, out result);
-
-        return result;
-    }
-
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
 
     public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
@@ -102,6 +95,12 @@ public class LevelGrid : MonoBehaviour
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         return gridObject.GetUnit();
     }
+
+    // public Unit GetUnitAtSmallHex(Hex smallHex)
+    // {
+    //     GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+    //     return gridObject.GetUnit();
+    // }
 
     public IInteractable GetInteractableAtGridPosition(GridPosition gridPosition)
     {
@@ -127,37 +126,37 @@ public class LevelGrid : MonoBehaviour
             if(gridPosition.x - 1 >= 0)
             {
                 //Left Node
-                neighbourList.Add(GetLargeHex(gridPosition.x - 1, gridPosition.z + 0));
+                neighbourList.Add(GetNeighbourOrSelf(gridPosition, -1, 0));
                 
                 //Left Down Node
                 if(gridPosition.z - 1 >= 0)
                 {
-                    neighbourList.Add(GetLargeHex(gridPosition.x - 1, gridPosition.z - 1));
+                    neighbourList.Add(GetNeighbourOrSelf(gridPosition, -1, -1));
                 }
 
                 //Left Up Node
                 if(gridPosition.z + 1 < gridSystem.GetHeight())
                 {            
-                    neighbourList.Add(GetLargeHex(gridPosition.x - 1, gridPosition.z + 1));    
+                    neighbourList.Add(GetNeighbourOrSelf(gridPosition, -1, 1));    
                 }        
             }
             
             if(gridPosition.x + 1 < gridSystem.GetWidth())
             {
                 //Right Node
-                neighbourList.Add(GetLargeHex(gridPosition.x + 1, gridPosition.z + 0));
+                neighbourList.Add(GetNeighbourOrSelf(gridPosition, 1, 0));
             }
 
             if(gridPosition.z - 1 >= 0)
             {            
                 //Right Down Node
-                neighbourList.Add(GetLargeHex(gridPosition.x + 0, gridPosition.z - 1));
+                neighbourList.Add(GetNeighbourOrSelf(gridPosition, 0, - 1));
             }
 
             if(gridPosition.z + 1 < gridSystem.GetHeight())
             {               
                 //Right Up Node
-                neighbourList.Add(GetLargeHex(gridPosition.x + 0, gridPosition.z + 1)); 
+                neighbourList.Add(GetNeighbourOrSelf(gridPosition, 0, 1)); 
             }       
         }
 
@@ -167,46 +166,91 @@ public class LevelGrid : MonoBehaviour
             if(gridPosition.x - 1 >= 0)
             {
                 //Left Node
-                neighbourList.Add(GetLargeHex(gridPosition.x - 1, gridPosition.z + 0));
+                neighbourList.Add(GetNeighbourOrSelf(gridPosition, -1, 0));
             }
             
             if(gridPosition.z - 1 >= 0)
             {
                 //Left Down Node
-                neighbourList.Add(GetLargeHex(gridPosition.x + 0, gridPosition.z - 1));
+                neighbourList.Add(GetNeighbourOrSelf(gridPosition, 0, -1));
             }
             
             if(gridPosition.z + 1< gridSystem.GetHeight())
             {   
                 //Left Up Node         
-                neighbourList.Add(GetLargeHex(gridPosition.x + 0, gridPosition.z + 1));    
+                neighbourList.Add(GetNeighbourOrSelf(gridPosition, 0, 1));    
             }        
             
             if(gridPosition.x + 1 < gridSystem.GetWidth())
             {
                 //Right Node
-                neighbourList.Add(GetLargeHex(gridPosition.x + 1, gridPosition.z + 0));
+                neighbourList.Add(GetNeighbourOrSelf(gridPosition, 1, 0));
   
                 //Right Down Node
                 if(gridPosition.z - 1 >= 0)
                 {
-                    neighbourList.Add(GetLargeHex(gridPosition.x + 1, gridPosition.z - 1));
+                    neighbourList.Add(GetNeighbourOrSelf(gridPosition, 1, -1));
                 }
 
                 //Right Up Node
                 if(gridPosition.z + 1 < gridSystem.GetHeight())
                 {   
-                    neighbourList.Add(GetLargeHex(gridPosition.x + 1, gridPosition.z + 1)); 
+                    neighbourList.Add(GetNeighbourOrSelf(gridPosition, 1, 1)); 
                 }     
             }    
         }
-        
+
         return neighbourList;
     }
 
-    private LargeHex GetLargeHex(int x, int z)
+    private LargeHex GetNeighbourOrSelf(GridPosition gridPosition, int xShift, int zShift)
     {
-        return GetHexFromCoordinates(new GridPosition(x, z)); 
+        return GetHexFromCoordinates(new GridPosition(gridPosition.x + xShift, gridPosition.z + zShift)) 
+            ?? GetHexFromCoordinates(gridPosition);
+
+        //It's the same as the above, but longer
+        //
+        // if(GetHexFromCoordinates(new GridPosition(gridPosition.x + xShift, gridPosition.z + zShift)) != null)
+        // {
+        //     return GetHexFromCoordinates(new GridPosition(gridPosition.x + xShift, gridPosition.z + zShift));
+        // }
+        // else
+        // {
+        //     return GetHexFromCoordinates(gridPosition);
+        // }
+    }
+    
+    public LargeHex GetHexFromCoordinates(GridPosition hexPosition)
+    {
+        LargeHex result = null;
+        hexDict.TryGetValue(hexPosition, out result);
+
+        return result;
     }
 
+    //Old version of GetNeighbourOrSelf
+    // private LargeHex GetLargeHex(int x, int z)
+    // {
+    //     return GetHexFromCoordinates(new GridPosition(x, z)); 
+    // }
+
+    public List<Hex> GetSmallNeighbours(Hex currentSmallHex)
+    {
+        List<Hex> smallNeighbourList = new List<Hex>();
+
+        int overlapSphereRadius = 10;
+        Vector3 hexWorldPosition = currentSmallHex.transform.position;
+
+        Collider[] colliderArray = Physics.OverlapSphere(hexWorldPosition, overlapSphereRadius, smallHexLayerMask);
+
+        foreach(Collider collider in colliderArray)
+        {
+            Hex neighbour;
+            collider.transform.parent.TryGetComponent<Hex>(out neighbour);
+            smallNeighbourList.Add(neighbour);
+            Debug.Log(neighbour);
+        }
+
+        return  smallNeighbourList;
+    }
 }

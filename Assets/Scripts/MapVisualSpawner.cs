@@ -14,11 +14,11 @@ public class MapVisualSpawner : MonoBehaviour
             {
                 GridPosition gridPosition = new GridPosition(x,z);
 
-                Transform largeHexSingleTransform = 
-                    Instantiate(largeHexPrefab, 
-                                LevelGrid.Instance.GetWorldPosition(gridPosition),
-                                Quaternion.Euler(0,10.9f,0)
-                                );                                                              
+                Transform largeHexSingleTransform = Instantiate(
+                                                        largeHexPrefab, 
+                                                        LevelGrid.Instance.GetWorldPosition(gridPosition),
+                                                        Quaternion.Euler(0,10.9f,0)
+                                                        );                                                              
             }
         }
     }
