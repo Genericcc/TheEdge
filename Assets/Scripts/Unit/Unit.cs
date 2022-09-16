@@ -13,13 +13,13 @@ public class Unit : MonoBehaviour
     public static event EventHandler OnAnyUnitDead;
 
     [SerializeField] private bool isEnemy;
-
-    public Card card;
+    private SquadCardSO stats;
 
     private GridPosition gridPosition;
     private LargeHex largeHex;
     private Hex smallHex;
 
+    private SquadManager squadManager;
     private HealthSystem healthSystem;
     private BaseAction[] baseActionArray;
 
@@ -28,6 +28,7 @@ public class Unit : MonoBehaviour
 
     private void Awake() 
     {
+        squadManager = GetComponentInParent<SquadManager>();
         healthSystem = GetComponent<HealthSystem>();
         baseActionArray = GetComponents<BaseAction>();
     }
@@ -36,6 +37,7 @@ public class Unit : MonoBehaviour
     {
         largeHex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position);
         smallHex = HexSelectionManager.Instance.GetSmallHexBeneath(transform.position);
+        stats = squadManager.GetSquadCard();
         
         if(largeHex != null)
         {
@@ -47,28 +49,23 @@ public class Unit : MonoBehaviour
         }
 
         LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
+        LevelGrid.Instance.AddUnitAtSmallHex(smallHex, this);
 
         TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
         healthSystem.OnDead += HealthSystem_OnDead;
 
         OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
+
+        
     }
 
     private void Update() 
     {
-        LargeHex hex;
-
-        if(HexSelectionManager.Instance.GetLargeHexBeneath(transform.position) != null)
-        {
-            hex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position);
-        }
-        else
-        {   //Temporary safeguard against getting null Hex while passing between large hexes (there is a tiny gap)
-            hex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position + Vector3.back * 2);
-        }
-
-        GridPosition newGridPosition = hex.GetHexPosition(); 
-
+        LargeHex newLargeHex = HexSelectionManager.Instance.GetLargeHexBeneath(transform.position) 
+                            ?? HexSelectionManager.Instance.GetLargeHexBeneath(transform.position + Vector3.back * 2);
+        
+        GridPosition newGridPosition = newLargeHex.GetHexPosition(); 
+        
         if(newGridPosition != gridPosition)
         {
             //Unit moved Grid Position
@@ -76,6 +73,18 @@ public class Unit : MonoBehaviour
             gridPosition = newGridPosition;
 
             LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
+        }
+
+        Hex newSmallHex = HexSelectionManager.Instance.GetSmallHexBeneath(transform.position) 
+                        ?? HexSelectionManager.Instance.GetSmallHexBeneath(transform.position + Vector3.back * 2);
+
+        if(newSmallHex != smallHex)
+        {
+            //Unit moved Grid Position
+            Hex oldSmallHex = smallHex;
+            smallHex = newSmallHex;
+
+            LevelGrid.Instance.UnitMovedSmallHex(this, oldSmallHex, newSmallHex);
         }
 
 
@@ -184,9 +193,9 @@ public class Unit : MonoBehaviour
         return isEnemy;
     }
 
-    public void Damage(int damageAmount)
+    public void Damage()
     {
-        healthSystem.Damage(damageAmount);    
+        healthSystem.Damage();    
     }
 
     private void HealthSystem_OnDead(object sender, EventArgs e)
@@ -202,5 +211,7 @@ public class Unit : MonoBehaviour
     {
         return healthSystem.GetHealthNormalized();
     }
+
+    public SquadCardSO GetStats() => stats;
 
 }

@@ -5,21 +5,24 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
+    [SerializeField] SquadManager squadManager;
+
     public event EventHandler OnDead;
     public event EventHandler OnDamaged;
 
+    private int health = 1;
     private int healthMax;
 
-    [SerializeField] private int health = 100;
-
-    private void Awake() 
+    public void Damage()
     {
-        healthMax = health;
-    }
-
-    public void Damage(int damageAmount)
-    {
-        health -= damageAmount;
+        if(squadManager.GetShields() > 0)
+        {
+            squadManager.DamageShields();
+        }
+        else
+        {
+            health--;
+        }
 
         if(health < 0)
         {

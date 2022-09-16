@@ -55,7 +55,7 @@ public class SwordAction : BaseAction
                 state = State.SwingingSwordAfterHit;
                 float afterHitStateTime = 0.5f;
                 stateTimer = afterHitStateTime;
-                targetUnit.Damage(100);
+                targetUnit.Damage();
                 OnAnySwordHit?.Invoke(this, EventArgs.Empty);
                 break;
             case State.SwingingSwordAfterHit:
@@ -65,35 +65,57 @@ public class SwordAction : BaseAction
         }
     }
 
-    public override List<GridPosition> GetValidActionGridPositionList()
+    public  bool IsValidActionSmallHex(Hex smallHex)
     {
-        List<GridPosition> validGridPositionList = new List<GridPosition>();
+        List<Hex> validSmallHexList = GetValidActionSmallHexList();
+        return validSmallHexList.Contains(smallHex);
+    }
 
+    public List<Hex> GetValidActionSmallHexList()
+    {
+        List<Hex> validSmallHexList = new List<Hex>();
         List<Hex> smallNeighbourList = LevelGrid.Instance.GetSmallNeighbours(unit.GetSmallHex());
 
         foreach(Hex neighbour in smallNeighbourList)
         {
-            Debug.Log(neighbour.name);
+            //Debug.Log(neighbour.name);
 
+            if(!LevelGrid.Instance.HasAnyUnitOnSmallHex(neighbour))
+            {
+                //GridPosition is empty, no unit
+                continue;
+            }
 
-            // if(!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
-            // {
-            //     //GridPosition is empty, no unit
-            //     continue;
-            // }
+            Unit targetUnit = LevelGrid.Instance.GetUnitAtSmallHex(neighbour);
 
-            // Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+            if(targetUnit.IsEnemy() == unit.IsEnemy())
+            {
+                //Both Units are on the same 'team'
+                continue;
+            }
 
-            // if(targetUnit.IsEnemy() == unit.IsEnemy())
-            // {
-            //     //Both Units are on the same 'team'
-            //     continue;
-            // }
-
-            // validGridPositionList.Add(testGridPosition);
+            validSmallHexList.Add(neighbour);
             
         }
-        return validGridPositionList;
+        return validSmallHexList;
+    }
+    
+    public void TakeActionOnSmallHex(Hex smallHex, Action onActionComplete)
+    {
+        targetUnit = LevelGrid.Instance.GetUnitAtSmallHex(smallHex);
+
+        state = State.SwingingSwordBeforeHit;
+        float beforeHitStateTime = 0.7f;
+        stateTimer = beforeHitStateTime;
+
+        OnSwordActionStarted?.Invoke(this, EventArgs.Empty);
+        ActionStart(onActionComplete);
+    }
+
+    //Empty function just so BaseAction error fucks off 
+    public override List<GridPosition> GetValidActionGridPositionList()
+    {
+        return new List<GridPosition>();
     }
 
     public List<GridPosition> GetValidActionGridPositionList(GridPosition gridPosition)

@@ -96,6 +96,7 @@ public class UnitActionSystem : MonoBehaviour
         if(InputManager.Instance.IsMouseButtonDown())
         {
             LargeHex hex = HexSelectionManager.Instance.GetSelectedHex();
+            Hex targetSmallHex = HexSelectionManager.Instance.GetSelectedSmallHex();
 
             if(hex == null)
             {
@@ -105,23 +106,55 @@ public class UnitActionSystem : MonoBehaviour
             GridPosition mouseGridPosition = hex.GetHexPosition();
             //LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
 
-            if(!selectedAction.IsValidActionGridPosition(mouseGridPosition))
+            if(selectedAction is MoveAction)
             {
-                //Position not in the ValidGridPositionList
-                return;
-            }
+                if(!selectedAction.IsValidActionGridPosition(mouseGridPosition))
+                {
+                    //Position not in the ValidGridPositionList
+                    return;
+                }
     
-            if(!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
-            {
-                //Debug.Log("Not enough action points");
-                return;
+                if(!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
+                {
+                    //Debug.Log("Not enough action points");
+                    return;
+                }
+
+                SetBusy();
+
+                selectedAction.TakeAction(mouseGridPosition, ClearBusy);
             }
 
-            SetBusy();
+            if(selectedAction is SwordAction)
+            {
+            
+                SwordAction swordAction = selectedAction as SwordAction; //This is random 
 
-            selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+                if(!swordAction.IsValidActionSmallHex(targetSmallHex))
+                {
+                    //Position not in the ValidGridPositionList
+                    return;
+                }
 
-            OnActionStarted?.Invoke(this, EventArgs.Empty);
+                if(!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
+                {
+                    //Debug.Log("Not enough action points");
+                    return;
+                }
+                
+                SetBusy();
+
+                BattleManager.Instance.Battle(selectedUnit, targetSmallHex.GetUnit(), swordAction, ClearBusy);
+                //Compare Initiative
+                //if(unit.ini > targetunit.Ini) then takeacition, then if targetunit defended, contrattack
+                //else switch units and takeaction, then if targetunit defended, contrattack
+
+        
+
+                //swordAction.TakeActionOnSmallHex(targetSmallHex, ClearBusy);
+            }            
+
+            OnActionStarted?.Invoke(this, EventArgs.Empty); //UI visual, ActionPointUI update
         }
     }
 
@@ -181,4 +214,9 @@ public class UnitActionSystem : MonoBehaviour
         }
         
     }
+
+    // public void SetEnemyUnitForAttack(Unit enemyUnit)
+    // {
+    //     selectedUnit = enemyUnit;
+    // }
 }

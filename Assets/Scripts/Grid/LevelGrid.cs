@@ -51,16 +51,28 @@ public class LevelGrid : MonoBehaviour
         gridObject.AddUnit(unit);
     }
 
+    public void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
+    {
+        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        gridObject.RemoveUnit(unit);
+    }
+
     public List<Unit> GetUnitListAtGridPosition(GridPosition gridPosition)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         return gridObject.GetUnitList();
     }
-
-    public void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
+    
+    public bool HasAnyUnitOnGridPosition(GridPosition gridPosition)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-        gridObject.RemoveUnit(unit);
+        return gridObject.HasAnyUnit();
+    }
+
+    public Unit GetUnitAtGridPosition(GridPosition gridPosition)
+    {
+        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        return gridObject.GetUnit();
     }
 
     public void UnitMovedGridPosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
@@ -68,6 +80,40 @@ public class LevelGrid : MonoBehaviour
         RemoveUnitAtGridPosition(fromGridPosition, unit);
 
         AddUnitAtGridPosition(toGridPosition, unit);
+
+        OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void AddUnitAtSmallHex(Hex smallHex, Unit unit)
+    {
+        smallHex.AddUnit(unit);
+    }
+
+    public void RemoveUnitAtSmallHex(Hex smallHex, Unit unit)
+    {
+        smallHex.RemoveUnit(unit);
+    }
+
+    public List<Unit> GetUnitListAtSmallHex(Hex smallHex)
+    {
+        return smallHex.GetUnitList();
+    }
+    
+    public bool HasAnyUnitOnSmallHex(Hex smallHex)
+    {
+        return smallHex.HasAnyUnit();
+    }
+
+    public Unit GetUnitAtSmallHex(Hex smallHex)
+    {
+        return smallHex.GetUnit();
+    }
+
+    public void UnitMovedSmallHex(Unit unit, Hex fromSmellHex, Hex toSmallHex)
+    {
+        RemoveUnitAtSmallHex(fromSmellHex, unit);
+
+        AddUnitAtSmallHex(toSmallHex, unit);
 
         OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
@@ -83,24 +129,6 @@ public class LevelGrid : MonoBehaviour
     public int GetHeight() => gridSystem.GetHeight();
 
     public GridSystem<GridObject> GetGridSystem() => gridSystem;
-
-    public bool HasAnyUnitOnGridPosition(GridPosition gridPosition)
-    {
-        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-        return gridObject.HasAnyUnit();
-    }
-
-    public Unit GetUnitAtGridPosition(GridPosition gridPosition)
-    {
-        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-        return gridObject.GetUnit();
-    }
-
-    // public Unit GetUnitAtSmallHex(Hex smallHex)
-    // {
-    //     GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-    //     return gridObject.GetUnit();
-    // }
 
     public IInteractable GetInteractableAtGridPosition(GridPosition gridPosition)
     {
@@ -238,7 +266,7 @@ public class LevelGrid : MonoBehaviour
     {
         List<Hex> smallNeighbourList = new List<Hex>();
 
-        int overlapSphereRadius = 10;
+        int overlapSphereRadius = 1;
         Vector3 hexWorldPosition = currentSmallHex.transform.position;
 
         Collider[] colliderArray = Physics.OverlapSphere(hexWorldPosition, overlapSphereRadius, smallHexLayerMask);
@@ -248,7 +276,6 @@ public class LevelGrid : MonoBehaviour
             Hex neighbour;
             collider.transform.parent.TryGetComponent<Hex>(out neighbour);
             smallNeighbourList.Add(neighbour);
-            Debug.Log(neighbour);
         }
 
         return  smallNeighbourList;

@@ -7,7 +7,7 @@ using TMPro;
 
 public class CardDisplay : MonoBehaviour
 {
-    public Card card;
+    public SquadCardSO card;
 
     public TextMeshProUGUI initiativeText;
     public TextMeshProUGUI attackText;
@@ -21,7 +21,7 @@ public class CardDisplay : MonoBehaviour
         attackText.text = card.attack.ToString();
         defenceText.text = card.defence.ToString();
         moveText.text = card.move.ToString();
-        shieldText.text = card.shield.ToString();
+        shieldText.text = card.shields.ToString();
     }
 
 }

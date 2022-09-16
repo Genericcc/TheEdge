@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiative: 2
   attack: 1
-  defence: 1
+  defence: 4
   move: 2
-  shield: 1
+  shields: 0
