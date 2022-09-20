@@ -207,5 +207,10 @@ public class ShootAction : BaseAction
     {
         return GetValidActionGridPositionList(gridPosition).Count;
     }
+
+    public override EnemyAIAction GetBestEnemyAIAction(Hex smallHex)
+    {
+        throw new NotImplementedException();
+    }
 }
  

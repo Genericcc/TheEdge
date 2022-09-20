@@ -23,6 +23,8 @@ public class MoveAction : BaseAction
             return; 
         }
 
+        Debug.Log(isLargeHexMoveCompleted);
+
         Vector3 targetPosition;
 
         if(!isLargeHexMoveCompleted)
@@ -52,7 +54,7 @@ public class MoveAction : BaseAction
                 currentPositionIndex++;
             }
             
-            if(currentPositionIndex >= positionList.Count)
+            if(currentPositionIndex + 1 >= positionList.Count)
             {
                 if(isLargeHexMoveCompleted)
                 {   
@@ -62,9 +64,10 @@ public class MoveAction : BaseAction
 
                     ActionComplete(); 
                 }
-            
-                isLargeHexMoveCompleted = true; //TODO: it always ends up as true...
-                
+                else
+                {
+                    isLargeHexMoveCompleted = true;
+                }
             }
         }
     }
@@ -159,7 +162,7 @@ public class MoveAction : BaseAction
     {
         return "Move";
     }
-    
+
     public override EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition)
     {
         int targetCountAtGridPosition = unit.GetAction<SwordAction>().GetTargetCountAtPosition(gridPosition);
@@ -170,6 +173,20 @@ public class MoveAction : BaseAction
         {
             gridPosition = gridPosition,
             actionValue = targetCountAtGridPosition * 10,
+        };
+    }
+    
+    public override EnemyAIAction GetBestEnemyAIAction(Hex targetSmallHex)
+    {
+        int targetCountAtSmallHex = unit.GetAction<SwordAction>().GetTargetCountAtSmallHex(targetSmallHex);
+
+        //Debug.Log($"Target count at {targetSmallHex.transform.position} is: {targetCountAtSmallHex}");
+
+        return new EnemyAIAction 
+        {
+            gridPosition = targetSmallHex.GetComponentInParent<LargeHex>().GetHexPosition(),
+            smallHex = targetSmallHex,
+            actionValue = targetCountAtSmallHex * 10,
         };
     }
 

@@ -75,8 +75,8 @@ public class Unit : MonoBehaviour
             LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
         }
 
-        Hex newSmallHex = HexSelectionManager.Instance.GetSmallHexBeneath(transform.position) 
-                        ?? HexSelectionManager.Instance.GetSmallHexBeneath(transform.position + Vector3.back * 2);
+        Hex newSmallHex =  HexSelectionManager.Instance.GetSmallHexBeneath(transform.position) 
+                        ?? HexSelectionManager.Instance.GetSmallHexBeneath(transform.position + Vector3.back * 1);
 
         if(newSmallHex != smallHex)
         {

@@ -74,4 +74,9 @@ public class InteractAction : BaseAction
     {
         ActionComplete();
     }
+
+    public override EnemyAIAction GetBestEnemyAIAction(Hex smallHex)
+    {
+        throw new NotImplementedException();
+    }
 }

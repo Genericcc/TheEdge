@@ -167,13 +167,6 @@ public class SwordAction : BaseAction
         ActionStart(onActionComplete);
     }
 
-    public int GetMaxSwordDistance() => maxSwordDistance;
-
-    public override string GetActionName()
-    {
-        return "Sword";
-    }
-
     public override EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition)
     {
         return new EnemyAIAction{
@@ -186,4 +179,55 @@ public class SwordAction : BaseAction
     {
         return GetValidActionGridPositionList(gridPosition).Count;
     }
+
+    public int GetMaxSwordDistance() => maxSwordDistance;
+
+    public override string GetActionName()
+    {
+        return "Sword";
+    }
+
+    public override EnemyAIAction GetBestEnemyAIAction(Hex smallHex)
+    {
+        return new EnemyAIAction{
+            smallHex = smallHex,
+            actionValue = 200,
+        };
+    }
+
+    public int GetTargetCountAtSmallHex(Hex smallHex)
+    {
+        return GetValidActionSmallHexList(smallHex).Count;
+    }
+    
+    //function for AI to find enemies on potential target smallHex
+    public List<Hex> GetValidActionSmallHexList(Hex targetSmallHex)
+    {
+        List<Hex> validSmallHexList = new List<Hex>();
+        List<Hex> smallNeighbourList = LevelGrid.Instance.GetSmallNeighbours(targetSmallHex);
+
+        foreach(Hex neighbour in smallNeighbourList)
+        {
+            //Debug.Log(neighbour.name);
+
+            if(!LevelGrid.Instance.HasAnyUnitOnSmallHex(neighbour))
+            {
+                //GridPosition is empty, no unit
+                continue;
+            }
+
+            Unit targetUnit = LevelGrid.Instance.GetUnitAtSmallHex(neighbour);
+
+            if(targetUnit.IsEnemy() == unit.IsEnemy())
+            {
+                //Both Units are on the same 'team'
+                continue;
+            }
+
+            validSmallHexList.Add(neighbour);
+            
+        }
+        return validSmallHexList;
+    }
+
 }

@@ -115,9 +115,27 @@ public class EnemyAI : MonoBehaviour
 
         if(bestEnemyAIAction != null && enemyUnit.TrySpendActionPointsToTakeAction(bestBaseAction))
         {
-            bestBaseAction.TakeAction(bestEnemyAIAction.gridPosition, onEnemyAIAcionComplete);
-            return true;
-        }else
+            if(bestBaseAction is MoveAction)
+            {
+                //TODO: set selectedHex for MoveAction
+                Debug.Log(bestEnemyAIAction.smallHex);
+                HexSelectionManager.Instance.RemoteSetSelectedSmallHex(bestEnemyAIAction.smallHex);
+
+                bestBaseAction.TakeAction(bestEnemyAIAction.gridPosition, onEnemyAIAcionComplete);
+                return true;
+            }
+            else if(bestBaseAction is SwordAction)
+            {
+                SwordAction swordAction = bestBaseAction as SwordAction;
+
+                swordAction.TakeActionOnSmallHex(bestEnemyAIAction.smallHex, onEnemyAIAcionComplete);
+                return true;
+            }
+
+            Debug.Log("Fuckup here");
+            return false;
+        }
+        else
         {
             return false;
         }

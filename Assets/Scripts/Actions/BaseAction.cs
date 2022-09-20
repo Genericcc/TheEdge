@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class BaseAction : MonoBehaviour
@@ -63,8 +64,17 @@ public abstract class BaseAction : MonoBehaviour
 
         foreach(GridPosition gridPosition in validGridPositionList)
         {
-            EnemyAIAction enemyAIAction = GetBestEnemyAIAction(gridPosition);
-            enemyAIActionList.Add(enemyAIAction);
+            LargeHex largeHex = HexSelectionManager.Instance.GetLargeHexBeneath(LevelGrid.Instance.GetWorldPosition(gridPosition));
+
+            List<Hex> childrenSmallHexList = largeHex.GetComponentsInChildren<Hex>().ToList();
+
+            foreach(Hex smallHex in childrenSmallHexList)
+            {
+                //Debug.Log(smallHex);
+                EnemyAIAction enemyAIAction = GetBestEnemyAIAction(smallHex);
+                enemyAIActionList.Add(enemyAIAction);
+            }
+            
         }
 
         if(enemyAIActionList.Count > 0)
@@ -80,5 +90,8 @@ public abstract class BaseAction : MonoBehaviour
     }
 
     public abstract EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition);
+
+    public abstract EnemyAIAction GetBestEnemyAIAction(Hex smallHex);
+    
 
 }

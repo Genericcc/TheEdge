@@ -132,6 +132,11 @@ public class HexSelectionManager : MonoBehaviour
         }
     }
 
+    public void RemoteSetSelectedSmallHex(Hex newSelectedSmallHex)
+    {
+        selectedSmallHex = newSelectedSmallHex;
+    }
+
     
     
 }

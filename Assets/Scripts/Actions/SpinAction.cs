@@ -62,4 +62,8 @@ public class SpinAction : BaseAction
         };
     }
 
+    public override EnemyAIAction GetBestEnemyAIAction(Hex smallHex)
+    {
+        throw new NotImplementedException();
+    }
 }

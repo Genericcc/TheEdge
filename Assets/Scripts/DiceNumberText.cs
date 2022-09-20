@@ -19,4 +19,6 @@ public class DiceNumberText : MonoBehaviour
     {
 		text.text = diceNumber.ToString ();
 	}
+
+    
 }
