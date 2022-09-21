@@ -56,7 +56,8 @@ public class UnitManager : MonoBehaviour
         if(unit.IsEnemy())
         {
             enemyUnitList.Remove(unit);
-        } else 
+        } 
+        else 
         {
             friendlyUniList.Remove(unit);
         }

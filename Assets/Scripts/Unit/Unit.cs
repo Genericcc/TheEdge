@@ -201,10 +201,14 @@ public class Unit : MonoBehaviour
     private void HealthSystem_OnDead(object sender, EventArgs e)
     {
         LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
+
+        smallHex.RemoveUnit(this);
+
+        OnAnyUnitDead.Invoke(this, EventArgs.Empty);
         
         Destroy(gameObject);
 
-        OnAnyUnitDead.Invoke(this, EventArgs.Empty);
+        
     }
 
     public float GetHealthNormalized()

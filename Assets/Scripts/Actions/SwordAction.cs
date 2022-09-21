@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SwordAction : BaseAction
@@ -71,7 +72,7 @@ public class SwordAction : BaseAction
         return validSmallHexList.Contains(smallHex);
     }
 
-    public List<Hex> GetValidActionSmallHexList()
+    public override List<Hex> GetValidActionSmallHexList()
     {
         List<Hex> validSmallHexList = new List<Hex>();
         List<Hex> smallNeighbourList = LevelGrid.Instance.GetSmallNeighbours(unit.GetSmallHex());
@@ -112,10 +113,26 @@ public class SwordAction : BaseAction
         ActionStart(onActionComplete);
     }
 
-    //Empty function just so BaseAction error fucks off 
     public override List<GridPosition> GetValidActionGridPositionList()
     {
-        return new List<GridPosition>();
+        List<GridPosition> emptyList = new List<GridPosition>();
+
+        return emptyList;
+
+        // List<GridPosition> validGirdPositionList = new List<GridPosition>();
+
+        // List<Hex> neighbourList = LevelGrid.Instance.GetSmallNeighbours(unit.GetSmallHex());
+
+        // foreach (Hex neighbour in neighbourList)
+        // {
+        //     GridPosition gridPosition = neighbour.GetComponentInParent<LargeHex>().GetHexPosition();
+
+        //     Debug.Log(gridPosition);
+
+        //     validGirdPositionList.Add(gridPosition);
+        // }
+
+        // return validGirdPositionList; //.Distinct<GridPosition>().ToList();
     }
 
     public List<GridPosition> GetValidActionGridPositionList(GridPosition gridPosition)
@@ -187,10 +204,11 @@ public class SwordAction : BaseAction
         return "Sword";
     }
 
-    public override EnemyAIAction GetBestEnemyAIAction(Hex smallHex)
-    {
+    public override EnemyAIAction GetBestEnemyAIAction(Hex targetSmallHex)
+    {       
         return new EnemyAIAction{
-            smallHex = smallHex,
+            gridPosition = targetSmallHex.GetComponentInParent<LargeHex>().GetHexPosition(),
+            smallHex = targetSmallHex,
             actionValue = 200,
         };
     }

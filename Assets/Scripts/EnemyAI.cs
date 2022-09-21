@@ -90,7 +90,6 @@ public class EnemyAI : MonoBehaviour
 
         foreach(BaseAction baseAction in enemyUnit.GetBaseActionArray())
         {
-            
             if(!enemyUnit.CanSpendActionPointsToTakeAction(baseAction))
             {
                 //Enemy cannot afford this action
@@ -104,11 +103,14 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
+                //Debug.Log($"Testing Action with the value of: {bestEnemyAIAction.actionValue}");
+
                 EnemyAIAction testEnemyAIAction = baseAction.GetBestEnemyAIAction();
                 if(testEnemyAIAction != null && testEnemyAIAction.actionValue > bestEnemyAIAction.actionValue)
                 {
                     bestEnemyAIAction = testEnemyAIAction;
                     bestBaseAction = baseAction;
+                    
                 }
             }
         }
@@ -118,7 +120,7 @@ public class EnemyAI : MonoBehaviour
             if(bestBaseAction is MoveAction)
             {
                 //TODO: set selectedHex for MoveAction
-                Debug.Log(bestEnemyAIAction.smallHex);
+                //Debug.Log(bestEnemyAIAction.smallHex);
                 HexSelectionManager.Instance.RemoteSetSelectedSmallHex(bestEnemyAIAction.smallHex);
 
                 bestBaseAction.TakeAction(bestEnemyAIAction.gridPosition, onEnemyAIAcionComplete);

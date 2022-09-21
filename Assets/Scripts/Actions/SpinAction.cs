@@ -66,4 +66,9 @@ public class SpinAction : BaseAction
     {
         throw new NotImplementedException();
     }
+
+    public override List<Hex> GetValidActionSmallHexList()
+    {
+        throw new NotImplementedException();
+    }
 }

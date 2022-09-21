@@ -79,4 +79,9 @@ public class InteractAction : BaseAction
     {
         throw new NotImplementedException();
     }
+
+    public override List<Hex> GetValidActionSmallHexList()
+    {
+        throw new NotImplementedException();
+    }
 }

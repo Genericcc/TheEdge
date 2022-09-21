@@ -22,6 +22,8 @@ public class LargeHex : MonoBehaviour
     }
 
     public GridPosition GetHexPosition() => hexPosition;
+
+    public Vector3 GetWorldPosition() => LevelGrid.Instance.GetWorldPosition(hexPosition);
     
 
 

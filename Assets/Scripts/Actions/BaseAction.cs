@@ -30,6 +30,8 @@ public abstract class BaseAction : MonoBehaviour
 
     public abstract List<GridPosition> GetValidActionGridPositionList();
 
+    public abstract List<Hex> GetValidActionSmallHexList();
+
     public virtual int GetActionPointCost()
     {
         return 1;
@@ -61,6 +63,7 @@ public abstract class BaseAction : MonoBehaviour
         List<EnemyAIAction> enemyAIActionList = new List<EnemyAIAction>();
 
         List<GridPosition> validGridPositionList = GetValidActionGridPositionList();
+        List<Hex> validForSwordActionSmallHexList = GetValidActionSmallHexList();
 
         foreach(GridPosition gridPosition in validGridPositionList)
         {
@@ -73,8 +76,14 @@ public abstract class BaseAction : MonoBehaviour
                 //Debug.Log(smallHex);
                 EnemyAIAction enemyAIAction = GetBestEnemyAIAction(smallHex);
                 enemyAIActionList.Add(enemyAIAction);
-            }
-            
+            }  
+        }
+
+        foreach(Hex smallHex in validForSwordActionSmallHexList)
+        {
+            //Debug.Log(smallHex);
+            EnemyAIAction enemyAIAction = GetBestEnemyAIAction(smallHex);
+            enemyAIActionList.Add(enemyAIAction);
         }
 
         if(enemyAIActionList.Count > 0)

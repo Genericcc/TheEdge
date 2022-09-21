@@ -23,7 +23,7 @@ public class MoveAction : BaseAction
             return; 
         }
 
-        Debug.Log(isLargeHexMoveCompleted);
+//        Debug.Log(isLargeHexMoveCompleted);
 
         Vector3 targetPosition;
 
@@ -190,5 +190,10 @@ public class MoveAction : BaseAction
         };
     }
 
+    public override List<Hex> GetValidActionSmallHexList()
+    {
+        List<Hex> emptyList = new List<Hex>();
 
+        return emptyList;
+    }
 }

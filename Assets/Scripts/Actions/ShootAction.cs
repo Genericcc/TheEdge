@@ -212,5 +212,10 @@ public class ShootAction : BaseAction
     {
         throw new NotImplementedException();
     }
+
+    public override List<Hex> GetValidActionSmallHexList()
+    {
+        throw new NotImplementedException();
+    }
 }
  

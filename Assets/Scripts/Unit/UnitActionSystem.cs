@@ -210,6 +210,8 @@ public class UnitActionSystem : MonoBehaviour
             if(friendlyUnitList[0] != null)
             {
                 SetSelectedUnit(friendlyUnitList[0]);
+                Debug.Log($"Selected unit is: {selectedUnit}");
+
             }
         }
         
