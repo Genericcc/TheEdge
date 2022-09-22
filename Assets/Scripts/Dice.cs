@@ -5,29 +5,36 @@ using UnityEngine;
 public class Dice : MonoBehaviour
 {
     static Rigidbody rb;
-	public static Vector3 diceVelocity;
+	private Vector3 diceVelocity;
+	DiceNumberText diceNumberText;
 
-	// Use this for initialization
 	void Start () 
     {
 		rb = GetComponent<Rigidbody> ();
+		rb.gameObject.SetActive(false);
+
+		BattleManager.OnDiceRoll += BattleManager_OnDiceRoll;
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+    void Update () 
     {
 		diceVelocity = rb.velocity;
+	}
 
-		if (Input.GetKeyDown (KeyCode.Space)) 
-        {
-			DiceNumberText.diceNumber = 0;
-			float dirX = Random.Range (0, 500);
-			float dirY = Random.Range (0, 500);
-			float dirZ = Random.Range (0, 500);
-			transform.position = new Vector3 (-2, 5, 20);
-			transform.rotation = Quaternion.identity;
-			rb.AddForce (transform.up * 500);
-			rb.AddTorque (dirX, dirY, dirZ);
-		}
+    private void BattleManager_OnDiceRoll(object sender, System.EventArgs e)
+    {
+		rb.gameObject.SetActive(true);
+		float dirX = Random.Range (200, 500);
+		float dirY = Random.Range (200, 500);
+		float dirZ = Random.Range (200, 500);
+		transform.position = new Vector3 (-15, 5, 25);
+		transform.rotation = Random.rotation;
+		rb.AddForce (transform.up * 500);
+		//rb.AddTorque (dirX, dirY, dirZ);
+    }
+
+	public Vector3 GetDiceVelocity()
+	{
+		return diceVelocity;
 	}
 }

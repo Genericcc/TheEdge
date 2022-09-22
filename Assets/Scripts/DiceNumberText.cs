@@ -8,17 +8,25 @@ using TMPro;
 public class DiceNumberText : MonoBehaviour
 {
     TextMeshProUGUI text;
-	public static int diceNumber;
+	private int diceNumber;
 
 	void Start () 
     {
 		text = GetComponent<TextMeshProUGUI> ();
+		SetDiceNumber(0);
 	}
 	
 	void Update () 
     {
 		text.text = diceNumber.ToString ();
 	}
+
+	public void SetDiceNumber(int number)
+	{
+		diceNumber = number;
+	}
+
+	public int GetDiceNumber() => diceNumber;
 
     
 }

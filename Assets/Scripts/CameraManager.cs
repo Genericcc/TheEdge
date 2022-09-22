@@ -6,12 +6,12 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] private GameObject actionCameraGameObject;
-
+    [SerializeField] private Transform diceTray;
 
     private void Start() 
     {
-        BaseAction.OnAnyActionStarted += BaseAction_OnAnyActionStarted;
-        BaseAction.OnAnyActionCompleted += BaseAction_OnAnyActionCompleted;
+        BattleManager.OnDiceRollStarted += BattleManager_OnDiceRollStarted;
+        BattleManager.OnDiceRollFinished += BattleManager_OnDiceRollFinished;
 
         HideActionCamera();
     }
@@ -26,41 +26,20 @@ public class CameraManager : MonoBehaviour
         actionCameraGameObject.SetActive(false);
     }    
     
-    private void BaseAction_OnAnyActionStarted(object sender, EventArgs e)
+    private void BattleManager_OnDiceRollStarted(object sender, EventArgs e)
     {
-        switch(sender)
-        {
-            case ShootAction shootAction:
-                Unit shooterUnit = shootAction.GetUnit();
-                Unit targetUnit = shootAction.GetTargetUnit();
-
-                Vector3 cameraCharacterHeight = Vector3.up * 1.7f;
-                Vector3 shootDir = (targetUnit.GetWorldPosition() - shooterUnit.GetWorldPosition()).normalized;
-
-                float shoulderOffsetAmount = 0.5f;
-                Vector3 shoulderOffset = Quaternion.Euler(0, 90, 0) * shootDir * shoulderOffsetAmount;
-
-                Vector3 actionCameraPosition =
-                    shooterUnit.GetWorldPosition() + 
-                    cameraCharacterHeight + 
-                    shoulderOffset + 
-                    (shootDir * -1);
-
-                actionCameraGameObject.transform.position = actionCameraPosition;
-                actionCameraGameObject.transform.LookAt(targetUnit.GetWorldPosition() + cameraCharacterHeight);
-                ShowActionCamera();
-                break;
-        }
+        Vector3 diceTrayOffset = Vector3.up * 10f;
+        Vector3 actionCameraPosition = diceTray.position + diceTrayOffset;
+          
+        actionCameraGameObject.transform.position = actionCameraPosition;
+        actionCameraGameObject.transform.LookAt(diceTray);
+        ShowActionCamera();
+        
     }
     
-    private void BaseAction_OnAnyActionCompleted(object sender, EventArgs e)
+    private void BattleManager_OnDiceRollFinished(object sender, EventArgs e)
     {
-        switch(sender)
-        {
-            case ShootAction shootAction:
-                HideActionCamera();
-                break;
-        }
+        HideActionCamera();
     }
 
 }

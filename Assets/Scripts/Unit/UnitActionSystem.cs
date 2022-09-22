@@ -144,14 +144,7 @@ public class UnitActionSystem : MonoBehaviour
                 
                 SetBusy();
 
-                BattleManager.Instance.Battle(selectedUnit, targetSmallHex.GetUnit(), swordAction, ClearBusy);
-                //Compare Initiative
-                //if(unit.ini > targetunit.Ini) then takeacition, then if targetunit defended, contrattack
-                //else switch units and takeaction, then if targetunit defended, contrattack
-
-        
-
-                //swordAction.TakeActionOnSmallHex(targetSmallHex, ClearBusy);
+                BattleManager.Instance.BattleSetup(selectedUnit, targetSmallHex.GetUnit(), swordAction, ClearBusy);
             }            
 
             OnActionStarted?.Invoke(this, EventArgs.Empty); //UI visual, ActionPointUI update
