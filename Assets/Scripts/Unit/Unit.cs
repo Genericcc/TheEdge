@@ -55,8 +55,6 @@ public class Unit : MonoBehaviour
         healthSystem.OnDead += HealthSystem_OnDead;
 
         OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
-
-        
     }
 
     private void Update() 
@@ -86,8 +84,6 @@ public class Unit : MonoBehaviour
 
             LevelGrid.Instance.UnitMovedSmallHex(this, oldSmallHex, newSmallHex);
         }
-
-
     }
 
     public T GetAction<T>() where T : BaseAction
@@ -206,9 +202,7 @@ public class Unit : MonoBehaviour
 
         OnAnyUnitDead.Invoke(this, EventArgs.Empty);
         
-        Destroy(gameObject);
-
-        
+        Destroy(gameObject); 
     }
 
     public float GetHealthNormalized()

@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Dice : MonoBehaviour
 {
-    static Rigidbody rb;
+    private Rigidbody rb;
 	private Vector3 diceVelocity;
-	DiceNumberText diceNumberText;
 
 	void Start () 
     {
@@ -27,7 +26,7 @@ public class Dice : MonoBehaviour
 		float dirX = Random.Range (200, 500);
 		float dirY = Random.Range (200, 500);
 		float dirZ = Random.Range (200, 500);
-		transform.position = new Vector3 (-15, 5, 25);
+		//transform.position = new Vector3 (-15, 5, 25);
 		transform.rotation = Random.rotation;
 		rb.AddForce (transform.up * 500);
 		//rb.AddTorque (dirX, dirY, dirZ);

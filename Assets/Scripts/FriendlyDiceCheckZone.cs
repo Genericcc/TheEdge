@@ -2,21 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiceCheckZone : MonoBehaviour
+public class FriendlyDiceCheckZone : MonoBehaviour
 {
+    [SerializeField] Dice friendlyDice;
+    [SerializeField] FriendlyDiceNumberText friendlyDiceNumberText;
+
     Vector3 diceVelocity;
-    Dice dice;
-    DiceNumberText diceNumberText;
 
 	private void Start() 
     {
-       diceNumberText = FindObjectOfType<DiceNumberText>(); 
-       dice = FindObjectOfType<Dice>();
+       //diceNumberText = FindObjectOfType<DiceNumberText>(); 
+       //dice = FindObjectOfType<Dice>();
     }
 
 	void Update () 
     {
-		diceVelocity = dice.GetDiceVelocity();
+		diceVelocity = friendlyDice.GetDiceVelocity();
 	}
 
 	void OnTriggerStay(Collider col)
@@ -28,10 +29,10 @@ public class DiceCheckZone : MonoBehaviour
 			switch (col.gameObject.name) 
             {
                 case "Side1":
-                    rolledNumber = 6;
+                    rolledNumber = 5;
                     break;
                 case "Side2":
-                    rolledNumber = 5;
+                    rolledNumber = 6;
                     break;
                 case "Side3":
                     rolledNumber = 4;
@@ -40,16 +41,16 @@ public class DiceCheckZone : MonoBehaviour
                     rolledNumber = 3;
                     break;
                 case "Side5":
-                    rolledNumber = 2;
+                    rolledNumber = 1;
                     break;
                 case "Side6":
-                    rolledNumber = 1;
+                    rolledNumber = 2;
                     break;
 			}
 
-            diceNumberText.SetDiceNumber(rolledNumber);
+            friendlyDiceNumberText.SetDiceNumber(rolledNumber);
 
-            BattleManager.Instance.SetDiceResults(rolledNumber, 2);
+            BattleManager.Instance.SetFriendlyDiceResults(rolledNumber);
 		}
 	}
 }

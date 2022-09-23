@@ -26,8 +26,8 @@ public class BattleManager : MonoBehaviour
     private State state;
     private float stateTimer;
     private bool isBattleStarted;
-    private int attackerDiceResult;
-    private int defenderDiceResult;
+    private int friendlyDiceResult;
+    private int enemyDiceResult;
 
     private void Awake() 
     {
@@ -63,20 +63,62 @@ public class BattleManager : MonoBehaviour
         {
             case State.BeforeDiceRoll:
                 OnDiceRoll?.Invoke(this, EventArgs.Empty);
+
                 SetState(State.DiceRolling, 2f);
                 break;
             case State.DiceRolling:
-                SetState(State.AfterDiceRoll, .5f);
+                AddRollsToStats();
                 OnDiceRollFinished?.Invoke(this, EventArgs.Empty);
+
+                SetState(State.AfterDiceRoll, .5f);
                 break;
-            case State.AfterDiceRoll:
-                SetState(State.Battle, .1f);
+            case State.AfterDiceRoll:            
                 Battle();
+
+                SetState(State.Battle, .1f);
                 break;
             case State.Battle:
                 isBattleStarted = false;
+                ClearStats();
                 break;
         }
+    }
+    private void SetState(State newState, float newStateTime)
+    {
+        state = newState;
+        stateTimer = newStateTime;
+    }
+
+    private void AddRollsToStats()
+    {
+        //SquadCardSO originalStats = cacheAttacker.GetStats();
+        SquadCardSO friendlyStats = cacheAttacker.GetStats();
+        SquadCardSO enemyStats = cacheDefender.GetStats();
+
+        friendlyStats.attack += friendlyDiceResult;
+        friendlyStats.defence += friendlyDiceResult;
+
+        enemyStats.attack += enemyDiceResult;
+        enemyStats.defence += enemyDiceResult;
+
+        Debug.Log(enemyStats.attack);
+        Debug.Log(enemyStats.defence);
+    }
+
+    private void ClearStats()
+    {
+        //SquadCardSO originalStats = cacheAttacker.GetStats();
+        SquadCardSO modifiedFriendlyStats = cacheAttacker.GetStats();
+        SquadCardSO modifiedEnemyStats = cacheDefender.GetStats();
+
+        modifiedFriendlyStats.attack -= friendlyDiceResult;
+        modifiedFriendlyStats.defence -= friendlyDiceResult;
+
+        modifiedEnemyStats.attack -= enemyDiceResult;
+        modifiedEnemyStats.defence -= enemyDiceResult;
+
+        Debug.Log(modifiedEnemyStats.attack);
+        Debug.Log(modifiedEnemyStats.defence);
     }
 
     public void BattleSetup(Unit attacker, Unit defender, SwordAction swordAction, Action ClearBusy)
@@ -91,17 +133,11 @@ public class BattleManager : MonoBehaviour
         cacheClearBusy = ClearBusy;
     }   
 
-    private void SetState(State newState, float newStateTime)
-    {
-        state = newState;
-        stateTimer = newStateTime;
-    }
-
     private void Battle()
     {
         if(cacheAttacker.GetStats().initiative >= cacheDefender.GetStats().initiative)
         {
-            if(cacheAttacker.GetStats().attack + attackerDiceResult > cacheDefender.GetStats().defence + defenderDiceResult)
+            if(cacheAttacker.GetStats().attack > cacheDefender.GetStats().defence)
             {
                 cacheSwordAction.TakeActionOnSmallHex(cacheDefender.GetSmallHex(), cacheClearBusy);
             } 
@@ -111,7 +147,7 @@ public class BattleManager : MonoBehaviour
             Debug.Log("Attacker's initiative is lower thatn the defender's.");
             //Preemptive strike from  defender's higher initiative
 
-            if(cacheDefender.GetStats().attack  + attackerDiceResult > cacheAttacker.GetStats().defence  + defenderDiceResult)
+            if(cacheDefender.GetStats().attack > cacheAttacker.GetStats().defence)
             {
                 SwordAction preemptiveAttackAction = cacheDefender.GetAction<SwordAction>();
                 preemptiveAttackAction.TakeActionOnSmallHex(cacheAttacker.GetSmallHex(), cacheClearBusy);
@@ -125,10 +161,14 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void SetDiceResults(int resultOne, int resultTwo)
+    public void SetFriendlyDiceResults(int result)
     {
-        attackerDiceResult = resultOne;
-        defenderDiceResult = resultTwo;
+        friendlyDiceResult = result;
+    }
+
+    public void SetEnemyDiceResults(int result)
+    {
+        enemyDiceResult = result;
     }
 
     // private bool CheckForRollWinner(int contestantOneScore, int contestantTwoScore)

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 
-public class DiceNumberText : MonoBehaviour
+public class EnemyDiceNumberText : MonoBehaviour
 {
     TextMeshProUGUI text;
 	private int diceNumber;
