@@ -26,7 +26,8 @@ public class UnitSelectedVisual : MonoBehaviour
         if(unit == UnitActionSystem.Instance.GetSelectedUnit()) 
         {
             meshRenderer.enabled = true;
-        } else 
+        } 
+        else 
         {
             meshRenderer.enabled = false;
         }
@@ -37,7 +38,8 @@ public class UnitSelectedVisual : MonoBehaviour
         if(unit == UnitActionSystem.Instance.GetSelectedUnit()) 
         {
             meshRenderer.enabled = true;
-        } else 
+        } 
+        else 
         {
             meshRenderer.enabled = false;
         }

@@ -210,8 +210,4 @@ public class UnitActionSystem : MonoBehaviour
         
     }
 
-    // public void SetEnemyUnitForAttack(Unit enemyUnit)
-    // {
-    //     selectedUnit = enemyUnit;
-    // }
 }

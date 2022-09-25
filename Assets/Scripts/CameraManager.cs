@@ -29,10 +29,10 @@ public class CameraManager : MonoBehaviour
     private void BattleManager_OnDiceRollStarted(object sender, EventArgs e)
     {
         Vector3 diceTrayOffset = Vector3.up * 10f;
-        Vector3 actionCameraPosition = diceTray.position + diceTrayOffset;
+       // Vector3 actionCameraPosition = diceTray.position + diceTrayOffset;
           
-        actionCameraGameObject.transform.position = actionCameraPosition;
-        actionCameraGameObject.transform.LookAt(diceTray);
+        //actionCameraGameObject.transform.position = actionCameraPosition;
+        //actionCameraGameObject.transform.LookAt(diceTray);
         ShowActionCamera();
         
     }

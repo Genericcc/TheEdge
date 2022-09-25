@@ -104,14 +104,14 @@ public class MoveAction : BaseAction
         {
             foreach(LargeHex neighbour in neighbourList)
             {
-                //Debug.Log(neighbour.GetHexPosition());
-
                 neighbourList = neighbourList.Concat(LevelGrid.Instance.GetNeighbourList(neighbour)).ToList<LargeHex>();
             }
             searchRange--;
         }
 
         neighbourList = neighbourList.Distinct().ToList<LargeHex>(); //Removes duplicates
+        
+        neighbourList.Add(unitLargeHex);    //Adds current largeHex
 
         foreach(LargeHex hex in neighbourList)
         {
@@ -154,7 +154,7 @@ public class MoveAction : BaseAction
 
             validGridPositionList.Add(testGridPosition);
         }
-        
+
         return validGridPositionList;
     }
 

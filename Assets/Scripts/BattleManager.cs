@@ -64,7 +64,7 @@ public class BattleManager : MonoBehaviour
             case State.BeforeDiceRoll:
                 OnDiceRoll?.Invoke(this, EventArgs.Empty);
 
-                SetState(State.DiceRolling, 2f);
+                SetState(State.DiceRolling, 4f);
                 break;
             case State.DiceRolling:
                 AddRollsToStats();

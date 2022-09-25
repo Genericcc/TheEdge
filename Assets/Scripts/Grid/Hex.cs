@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Hex : MonoBehaviour
 {
-    [SerializeField] private GameObject visualGameObject;
+    [SerializeField] private GameObject visualSingleSmallHexGameObject;
 
     private List<Unit> unitList;
 
     private void Awake() 
     {
         unitList = new List<Unit>();
+
+        Hide();
     }
 
     public void AddUnit(Unit unit)
@@ -30,6 +32,21 @@ public class Hex : MonoBehaviour
         return unitList.Count > 0;
     }
 
+    public bool HasEnemyUnit()
+    {
+        bool hasEnemy = false;
+
+        if(HasAnyUnit())
+        {
+            if(unitList[0].IsEnemy())
+            {
+                hasEnemy = true;
+            }
+        }
+
+        return hasEnemy;
+    }
+
     public Unit GetUnit()
     {
         if(HasAnyUnit())
@@ -41,5 +58,15 @@ public class Hex : MonoBehaviour
         }
     }
 
-    public GameObject GetVisual() => visualGameObject;
+    public void Show()
+    {
+        visualSingleSmallHexGameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        visualSingleSmallHexGameObject.SetActive(false);
+    }
+
+    public GameObject GetVisual() => visualSingleSmallHexGameObject;
 }
