@@ -1,0 +1,27 @@
+.menu-button {
+    font-size: 500%;
+    background-color: rgba(25, 25, 25, 0);
+    border-left-color: rgba(25, 25, 25, 0);
+    border-right-color: rgba(25, 25, 25, 0);
+    border-top-color: rgba(25, 25, 25, 0);
+    border-bottom-color: rgba(25, 25, 25, 0);
+    -unity-font: url('project://database/Assets/Textures/TH3%20MACHINE.ttf?fileID=12800000&guid=453db0f769f2a1b428f2fd258134e335&type=3#TH3 MACHINE');
+    -unity-font-definition: none;
+    color: rgb(255, 245, 241);
+    padding-bottom: 0;
+    padding-top: 0;
+    max-height: none;
+    transition-duration: 0.3s;
+}
+
+.menu-button:hover {
+    -unity-font: url('project://database/Assets/Textures/TH3%20MACHINE.ttf?fileID=12800000&guid=453db0f769f2a1b428f2fd258134e335&type=3#TH3 MACHINE');
+    font-size: 600%;
+    color: rgb(195, 115, 85);
+    -unity-font-style: normal;
+    rotate: 0;
+    transition-duration: 0.3s;
+    transition-delay: 0s;
+    transition-property: all;
+    transition-timing-function: ease;
+}

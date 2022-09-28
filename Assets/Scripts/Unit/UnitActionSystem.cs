@@ -34,7 +34,7 @@ public class UnitActionSystem : MonoBehaviour
     {
         SetSelectedUnit(selectedUnit);
         
-        Unit.OnAnyUnitDead += Unit_OnAnyUnitDead;
+        //Unit.OnAnyUnitDead += Unit_OnAnyUnitDead;
     }
 
     private void Update() 
@@ -165,7 +165,7 @@ public class UnitActionSystem : MonoBehaviour
         OnBusyChanged?.Invoke(this, isBusy);
     }
 
-    private void SetSelectedUnit(Unit unit) 
+    public void SetSelectedUnit(Unit unit) 
     {
         selectedUnit = unit;
 
@@ -192,22 +192,22 @@ public class UnitActionSystem : MonoBehaviour
     }
     
     //Automatic selection of a different Unit if the one previously selected dies
-    private void Unit_OnAnyUnitDead(object sender, EventArgs e)
-    {
-        Unit deadUnit = sender as Unit; 
+    // private void Unit_OnAnyUnitDead(object sender, EventArgs e)
+    // {
+    //     Unit deadUnit = sender as Unit; 
 
-        if(!deadUnit.IsEnemy())
-        {
-            List<Unit> friendlyUnitList = UnitManager.Instance.GetFriendlyUnitList();
+    //     if(!deadUnit.IsEnemy())
+    //     {
+    //         List<Unit> friendlyUnitList = UnitManager.Instance.GetFriendlyUnitList();
 
-            if(friendlyUnitList[0] != null)
-            {
-                SetSelectedUnit(friendlyUnitList[0]);
-                Debug.Log($"Selected unit is: {selectedUnit}");
+    //         if(friendlyUnitList[0] != null)
+    //         {
+    //             SetSelectedUnit(friendlyUnitList[0]);
+    //             Debug.Log($"Selected unit is: {selectedUnit}");
 
-            }
-        }
+    //         }
+    //     }
         
-    }
+    // }
 
 }

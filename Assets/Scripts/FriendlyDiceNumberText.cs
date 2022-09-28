@@ -18,7 +18,7 @@ public class FriendlyDiceNumberText : MonoBehaviour
 	
 	void Update () 
     {
-		text.text = diceNumber.ToString ();
+		text.text = "Your roll: " + diceNumber.ToString ();
 	}
 
 	public void SetDiceNumber(int number)

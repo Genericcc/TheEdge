@@ -18,10 +18,10 @@ public class BattleManager : MonoBehaviour
         Battle,
     }
 
-    private Unit cacheAttacker; 
-    private Unit cacheDefender; 
-    private SwordAction cacheSwordAction;
-    private Action cacheClearBusy;
+    private Unit cachedAttacker; 
+    private Unit cachedDefender; 
+    private SwordAction cachedSwordAction;
+    private Action cachedClearBusy;
 
     private State state;
     private float stateTimer;
@@ -91,34 +91,26 @@ public class BattleManager : MonoBehaviour
 
     private void AddRollsToStats()
     {
-        //SquadCardSO originalStats = cacheAttacker.GetStats();
-        SquadCardSO friendlyStats = cacheAttacker.GetStats();
-        SquadCardSO enemyStats = cacheDefender.GetStats();
+        SquadCardSO friendlyStats = cachedAttacker.GetStats();
+        SquadCardSO enemyStats = cachedDefender.GetStats();
 
         friendlyStats.attack += friendlyDiceResult;
         friendlyStats.defence += friendlyDiceResult;
 
         enemyStats.attack += enemyDiceResult;
         enemyStats.defence += enemyDiceResult;
-
-        Debug.Log(enemyStats.attack);
-        Debug.Log(enemyStats.defence);
     }
 
     private void ClearStats()
     {
-        //SquadCardSO originalStats = cacheAttacker.GetStats();
-        SquadCardSO modifiedFriendlyStats = cacheAttacker.GetStats();
-        SquadCardSO modifiedEnemyStats = cacheDefender.GetStats();
+        SquadCardSO modifiedFriendlyStats = cachedAttacker.GetStats();
+        SquadCardSO modifiedEnemyStats = cachedDefender.GetStats();
 
         modifiedFriendlyStats.attack -= friendlyDiceResult;
         modifiedFriendlyStats.defence -= friendlyDiceResult;
 
         modifiedEnemyStats.attack -= enemyDiceResult;
         modifiedEnemyStats.defence -= enemyDiceResult;
-
-        Debug.Log(modifiedEnemyStats.attack);
-        Debug.Log(modifiedEnemyStats.defence);
     }
 
     public void BattleSetup(Unit attacker, Unit defender, SwordAction swordAction, Action ClearBusy)
@@ -127,36 +119,37 @@ public class BattleManager : MonoBehaviour
         isBattleStarted = true;
         OnDiceRollStarted?.Invoke(this, EventArgs.Empty);
 
-        cacheAttacker = attacker;
-        cacheDefender = defender;
-        cacheSwordAction = swordAction;
-        cacheClearBusy = ClearBusy;
+        cachedAttacker = attacker;
+        cachedDefender = defender;
+        cachedSwordAction = swordAction;
+        cachedClearBusy = ClearBusy;
     }   
 
     private void Battle()
     {
-        if(cacheAttacker.GetStats().initiative >= cacheDefender.GetStats().initiative)
+        if(cachedAttacker.GetStats().initiative >= cachedDefender.GetStats().initiative)
         {
-            if(cacheAttacker.GetStats().attack > cacheDefender.GetStats().defence)
+            if(cachedAttacker.GetStats().attack > cachedDefender.GetStats().defence)
             {
-                cacheSwordAction.TakeActionOnSmallHex(cacheDefender.GetSmallHex(), cacheClearBusy);
+                cachedSwordAction.TakeActionOnSmallHex(cachedDefender.GetSmallHex(), cachedClearBusy);
             } 
         }
         else //Attacker has lower initiative
         {
             Debug.Log("Attacker's initiative is lower thatn the defender's.");
+            
             //Preemptive strike from  defender's higher initiative
-
-            if(cacheDefender.GetStats().attack > cacheAttacker.GetStats().defence)
+            if(cachedDefender.GetStats().attack > cachedAttacker.GetStats().defence)
             {
-                SwordAction preemptiveAttackAction = cacheDefender.GetAction<SwordAction>();
-                preemptiveAttackAction.TakeActionOnSmallHex(cacheAttacker.GetSmallHex(), cacheClearBusy);
+                SwordAction preemptiveAttackAction = cachedDefender.GetAction<SwordAction>();
+                preemptiveAttackAction.TakeActionOnSmallHex(cachedAttacker.GetSmallHex(), cachedClearBusy);
             }
             else //Preemtive attack didn't hit the attacker 
             {
+
                 Debug.Log("You've defended, and are now contrattacking.");
 
-                cacheSwordAction.TakeActionOnSmallHex(cacheDefender.GetSmallHex(), cacheClearBusy);
+                cachedSwordAction.TakeActionOnSmallHex(cachedDefender.GetSmallHex(), cachedClearBusy);
             }
         }
     }

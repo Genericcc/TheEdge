@@ -18,7 +18,7 @@ public class EnemyDiceNumberText : MonoBehaviour
 	
 	void Update () 
     {
-		text.text = diceNumber.ToString ();
+		text.text = "Enemy roll: " + diceNumber.ToString ();
 	}
 
 	public void SetDiceNumber(int number)

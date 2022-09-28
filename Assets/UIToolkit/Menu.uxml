@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UIToolkit/MenuStyles.uss?fileID=7433441132597879392&amp;guid=63b174e7d28f707409bb066bcb926386&amp;type=3#MenuStyles" />
+    <ui:VisualElement name="menuScreen" style="width: 50%; height: 100%; margin-left: 30px; -unity-background-image-tint-color: rgba(255, 255, 255, 255); background-color: rgba(0, 0, 0, 0.56);">
+        <ui:VisualElement name="Logo" style="background-image: url(&apos;project://database/Assets/Textures/edgelogo.png?fileID=2800000&amp;guid=7297dde9df1b55740aa1b777f2be6788&amp;type=3#edgelogo&apos;); width: 100%; height: 30%; align-items: center; justify-content: center; margin-top: 20px;" />
+        <ui:VisualElement name="Buttons" style="margin-top: 20px;">
+            <ui:Button tabindex="-1" text="Play" display-tooltip-when-elided="true" name="PlayButton" class="menu-button" />
+            <ui:Button tabindex="-1" text="Settings" display-tooltip-when-elided="true" name="SettingsButton" class="menu-button" />
+            <ui:Button tabindex="-1" text="Exit" display-tooltip-when-elided="true" name="ExitButton" class="menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
