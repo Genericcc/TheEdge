@@ -13,6 +13,12 @@ PrefabInstance:
       propertyPath: isEnemy
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4332872303509084953, guid: 8e950c24c945df745b2369f20ae82019,
+        type: 3}
+      propertyPath: squadCardSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 955e414b0a0731342a7e28f259f37198,
+        type: 2}
     - target: {fileID: 4786997719312358269, guid: 8e950c24c945df745b2369f20ae82019,
         type: 3}
       propertyPath: m_LocalPosition.x

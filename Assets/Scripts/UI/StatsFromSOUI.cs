@@ -12,7 +12,6 @@ public class StatsFromSOUI : MonoBehaviour
     [SerializeField] private bool isInverted;
 
     private Transform cameraTransform;
-    
 
     private void Start() 
     {
@@ -23,8 +22,29 @@ public class StatsFromSOUI : MonoBehaviour
 
         UpdateDisplay();
     }
+   
+    private void UpdateDisplay()
+    {
+        foreach(RectTransform element in rectList)
+        {
+            if(element != null)
+            {
+                element.GetComponentInChildren<TextMeshProUGUI>().text = squadCardSO.GetDesiredStat(element.name).ToString();
+            }
+        }
+    }
+    
+    private void BattleManager_OnDiceRollStarted(object sender, EventArgs e)
+    {
+        UpdateDisplay();
+    }
 
-    private void LateUpdate() 
+    private void BattleManager_OnClearStats(object sender, EventArgs e)
+    {
+        UpdateDisplay();
+    }
+
+    private void LateUpdate()
     {
         if(isInverted)
         {
@@ -35,24 +55,5 @@ public class StatsFromSOUI : MonoBehaviour
         {
             transform.LookAt(cameraTransform);
         }
-        
-    }
-
-    private void UpdateDisplay()
-    {
-        foreach(RectTransform element in rectList)
-        {
-            element.GetComponentInChildren<TextMeshProUGUI>().text = squadCardSO.GetDesiredStat(element.name).ToString();
-        }
-    }
-
-    private void BattleManager_OnDiceRollStarted(object sender, EventArgs e)
-    {
-        UpdateDisplay();
-    }
-
-    private void BattleManager_OnClearStats(object sender, EventArgs e)
-    {
-        UpdateDisplay();
-    }
+    } 
 }
