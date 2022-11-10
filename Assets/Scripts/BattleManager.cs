@@ -10,6 +10,7 @@ public class BattleManager : MonoBehaviour
     public static event EventHandler OnDiceRollStarted;
     public static event EventHandler OnDiceRollFinished;
     public static event EventHandler OnDiceRoll;
+    public static event EventHandler OnClearStats;
 
     private enum State {
         BeforeDiceRoll,
@@ -112,12 +113,15 @@ public class BattleManager : MonoBehaviour
 
         modifiedEnemyStats.attack -= enemyDiceResult;
         modifiedEnemyStats.defence -= enemyDiceResult;
+
+        OnClearStats?.Invoke(this, EventArgs.Empty);
     }
 
     public void BattleSetup(Unit attacker, Unit defender, SwordAction swordAction, Action ClearBusy)
     {
         SetState(State.BeforeDiceRoll, .5f);
         isBattleStarted = true;
+        
         OnDiceRollStarted?.Invoke(this, EventArgs.Empty);
 
         cachedAttacker = attacker;

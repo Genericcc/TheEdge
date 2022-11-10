@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DemonBasicCard
   m_EditorClassIdentifier: 
   initiative: 3
-  attack: 3
-  defence: 0
+  attack: 2
+  defence: 2
   move: 2
   shields: 1

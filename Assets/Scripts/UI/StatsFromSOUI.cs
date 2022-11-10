@@ -3,22 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class StatsFromSOUI : MonoBehaviour
 {
     [SerializeField] private SquadCardSO squadCardSO;
-    [SerializeField] private RectTransform attack;
-    [SerializeField] private RectTransform defence;
-    [SerializeField] private RectTransform initiative;
-    [SerializeField] private RectTransform move;
-    [SerializeField] private RectTransform shields;
+    [SerializeField] private List<RectTransform> rectList;
+    [SerializeField] private bool isInverted;
+
+    private Transform cameraTransform;
+    
 
     private void Start() 
     {
-        initiative.GetComponentInChildren<TextMeshProUGUI>().text = squadCardSO.initiative.ToString();
-        attack.GetComponentInChildren<TextMeshProUGUI>().text = squadCardSO.attack.ToString();
-        defence.GetComponentInChildren<TextMeshProUGUI>().text = squadCardSO.defence.ToString();
-        move.GetComponentInChildren<TextMeshProUGUI>().text = squadCardSO.move.ToString();
-        shields.GetComponentInChildren<TextMeshProUGUI>().text = squadCardSO.shields.ToString();
+        cameraTransform = Camera.main.transform;
+
+        BattleManager.OnDiceRollStarted += BattleManager_OnDiceRollStarted; 
+        BattleManager.OnClearStats += BattleManager_OnClearStats; 
+
+        UpdateDisplay();
+    }
+
+    private void LateUpdate() 
+    {
+        if(isInverted)
+        {
+            Vector3 dirToCamera = (cameraTransform.position - transform.position).normalized;
+            transform.LookAt(transform.position + dirToCamera * -1f);
+        }
+        else
+        {
+            transform.LookAt(cameraTransform);
+        }
+        
+    }
+
+    private void UpdateDisplay()
+    {
+        foreach(RectTransform element in rectList)
+        {
+            element.GetComponentInChildren<TextMeshProUGUI>().text = squadCardSO.GetDesiredStat(element.name).ToString();
+        }
+    }
+
+    private void BattleManager_OnDiceRollStarted(object sender, EventArgs e)
+    {
+        UpdateDisplay();
+    }
+
+    private void BattleManager_OnClearStats(object sender, EventArgs e)
+    {
+        UpdateDisplay();
     }
 }
