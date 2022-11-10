@@ -83,6 +83,7 @@ public class BattleManager : MonoBehaviour
                 break;
         }
     }
+    
     private void SetState(State newState, float newStateTime)
     {
         state = newState;
@@ -134,10 +135,10 @@ public class BattleManager : MonoBehaviour
                 cachedSwordAction.TakeActionOnSmallHex(cachedDefender.GetSmallHex(), cachedClearBusy);
             } 
         }
-        else //Attacker has lower initiative
+        else //Attacker has lower initiative-
         {
             Debug.Log("Attacker's initiative is lower thatn the defender's.");
-            
+
             //Preemptive strike from  defender's higher initiative
             if(cachedDefender.GetStats().attack > cachedAttacker.GetStats().defence)
             {
