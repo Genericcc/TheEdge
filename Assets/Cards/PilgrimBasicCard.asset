@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PilgrimBasicCard
   m_EditorClassIdentifier: 
   initiative: 2
-  attack: 5
-  defence: 5
+  attack: 3
+  defence: 2
   move: 2
   shields: 0
