@@ -9,6 +9,9 @@ public class CameraController : MonoBehaviour
     private const float MAX_FOLLOW_Y_OFFSET = 12f;
 
     [SerializeField] CinemachineVirtualCamera cinemachineVirtualCamera;
+    [SerializeField] float moveSpeed = 10f;
+    [SerializeField] float rotationSpeed = 100f;
+    [SerializeField] float zoomAmount = 1f;
 
     private CinemachineTransposer cinemachineTransposer;
     private Vector3 targetFollowOffset;
@@ -30,8 +33,6 @@ public class CameraController : MonoBehaviour
     {
         Vector2 inputMoveDir = InputManager.Instance.GetCameraMoveVector();
 
-        float moveSpeed = 10f;
-
         Vector3 moveVector = transform.forward * inputMoveDir.y +  transform.right * inputMoveDir.x;
         transform.position += moveVector * moveSpeed * Time.deltaTime;
     }
@@ -42,14 +43,12 @@ public class CameraController : MonoBehaviour
         
         rotationVector.y = InputManager.Instance.GetCameraRotateAmount();
         
-        float rotationSpeed = 100f;
+        
         transform.eulerAngles += rotationVector * rotationSpeed * Time.deltaTime;
     }
 
     private void HandleZoom() 
     {
-        float zoomAmount = 1f;
-
         targetFollowOffset.y += InputManager.Instance.GetCameraZoomAnout() * zoomAmount;
 
         targetFollowOffset.y = Mathf.Clamp(targetFollowOffset.y, MIN_FOLLOW_Y_OFFSET, MAX_FOLLOW_Y_OFFSET);
